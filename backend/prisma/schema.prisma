@@ -33,7 +33,8 @@ model Reserva {
   cabanaId     Int
   clienteId    Int
   adminId      Int
-  fechaReserva DateTime
+  fechaInicio  DateTime
+  fechaFin     DateTime
   abono        Float
   numPersonas  Int
   horaRegistro DateTime      @default(now())
@@ -42,8 +43,6 @@ model Reserva {
   cabana        Cabana        @relation(fields: [cabanaId], references: [id])
   cliente       Cliente       @relation(fields: [clienteId], references: [id])
   administrador Administrador @relation(fields: [adminId], references: [id])
-
-  @@unique([cabanaId, fechaReserva]) // evitamos dobles reservas en un mismo dia
 }
 
 enum EstadoReserva {

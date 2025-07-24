@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+model Administrador {
+  id       Int       @id @default(autoincrement())
+  nombre   String
+  usuario  String    @unique
+  password String
+  reservas Reserva[]
+}
+
+model Cabana {
+  id       Int       @id @default(autoincrement())
+  nombre   String
+  reservas Reserva[]
+}
+
+model Cliente {
+  id         Int       @id @default(autoincrement())
+  nombre     String
+  celular    String
+  reservas   Reserva[]
+}
+
+model Reserva {
+  id           Int           @id @default(autoincrement())
+  cabanaId     Int
+  clienteId    Int
+  adminId      Int
+  fechaReserva DateTime
+  abono        Float
+  numPersonas  Int
+  horaRegistro DateTime      @default(now())
+  estado       EstadoReserva
+
+  cabana        Cabana        @relation(fields: [cabanaId], references: [id])
+  cliente       Cliente       @relation(fields: [clienteId], references: [id])
+  administrador Administrador @relation(fields: [adminId], references: [id])
+
+  @@unique([cabanaId, fechaReserva]) // evitamos dobles reservas en un mismo dia
+}
+
+enum EstadoReserva {
+  reservada
+  finalizada
+}

@@ -1,0 +1,9 @@
+# node
+node_modules
+.env
+
+# Logs
+npm-debug.log*
+
+# Prisma
+prisma/dev.db

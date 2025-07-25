@@ -7,3 +7,6 @@ npm-debug.log*
 
 # Prisma
 prisma/dev.db
+
+# Desktop Services Store
+.DS_Store

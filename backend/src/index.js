@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.routes.js'
 import clientesRoutes from './routes/clientes.routes.js'
 import cabanasRoutes from './routes/cabanas.routes.js'
 import reservasRoutes from './routes/reservas.routes.js'
+import adminRoutes from './routes/admin.routes.js'
 
 
 // Cargamos las variables de .env
@@ -19,27 +20,10 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api', authRoutes)
+app.use('/api/admin', adminRoutes)
 app.use('/api/clientes',clientesRoutes)
 app.use('/api/cabanas',cabanasRoutes)
 app.use('/api/reservas', reservasRoutes)
-
-
-// app.get('/admin-test', async (req, res) => {
-//     try{
-//         const administradores = await prisma.Administrador.findMany()
-//         res.json(administradores)
-//     } catch (error) {
-//         console.error('Error al consultar administradores:', error)
-//         res.status(500).json({ error: 'Error consultando la base de datos' })
-//     }
-// })
-
-// app.get('/protected-test', verifyToken, (req, res) => {
-//   res.json({
-//     message: 'Accediste a una ruta protegida 🎉',
-//     admin: req.admin
-//   })
-// })
 
 app.get('/', (req, res) => {
     res.send('API funcionando correctamente por: Deiby Alejandro')

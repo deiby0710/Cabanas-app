@@ -15,7 +15,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     // Simulación de carga o verificación de sesión
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 8), () {
       // Aquí puedes decidir a dónde ir:
       // Por ahora, siempre va al login
       context.go('/login');

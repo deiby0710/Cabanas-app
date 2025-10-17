@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:frontend/features/auth/presentation/providers/auth_provider.dart';
 import 'package:frontend/features/auth/presentation/widgets/login_button.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final bool isLogin;
+  const LoginForm({super.key, required this.isLogin});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -10,62 +14,77 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  bool _isPasswordVisible = false;
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit(BuildContext context) async {
+    final authProvider = context.read<AuthProvider>();
+    if (!_formKey.currentState!.validate()) return;
+
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    try {
+      if (widget.isLogin) {
+        await authProvider.login(email, password);
+      } else {
+        await authProvider.register(email, password);
+      }
+
+      if (authProvider.user != null && mounted) {
+        context.go('/selectOrganization');
+      }
+    } catch (_) {
+      // ya manejado por el provider
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Campo de email
+          // Campo Email
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               labelText: 'Correo electrónico',
-              prefixIcon: Icon(Icons.email_outlined),
               border: OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Por favor ingresa tu correo';
+                return 'Ingresa tu correo electrónico';
               }
-              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                return 'Correo no válido';
+              if (!value.contains('@')) {
+                return 'Correo inválido';
               }
               return null;
             },
           ),
-
           const SizedBox(height: 20),
 
-          // Campo de contraseña
+          // Campo Password
           TextFormField(
             controller: _passwordController,
-            obscureText: !_isPasswordVisible,
-            decoration: InputDecoration(
+            obscureText: true,
+            decoration: const InputDecoration(
               labelText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock_outline),
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _isPasswordVisible
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                ),
-                onPressed: () {
-                  setState(() => _isPasswordVisible = !_isPasswordVisible);
-                },
-              ),
+              border: OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Por favor ingresa tu contraseña';
+                return 'Ingresa tu contraseña';
               }
               if (value.length < 6) {
                 return 'Debe tener al menos 6 caracteres';
@@ -73,20 +92,24 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-
           const SizedBox(height: 30),
 
-          // Botón de login
+          // Botón de envío modular
           LoginButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // En el futuro aquí conectaremos la lógica (provider/bloc)
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Iniciando sesión...')),
-                );
-              }
-            },
+            isLoading: authProvider.isLoading,
+            text: widget.isLogin ? 'Iniciar Sesión' : 'Registrarme',
+            onPressed: () => _submit(context),
           ),
+
+          const SizedBox(height: 20),
+
+          // Mostrar errores
+          if (authProvider.errorMessage != null)
+            Text(
+              authProvider.errorMessage!,
+              style: const TextStyle(color: Colors.red),
+              textAlign: TextAlign.center,
+            ),
         ],
       ),
     );

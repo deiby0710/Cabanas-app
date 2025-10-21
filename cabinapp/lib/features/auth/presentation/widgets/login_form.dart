@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/features/auth/presentation/providers/auth_provider.dart';
 import 'package:cabinapp/features/auth/presentation/widgets/login_button.dart';
+import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import de las traducciones
 
 class LoginForm extends StatefulWidget {
   final bool isLogin;
@@ -34,10 +35,8 @@ class _LoginFormState extends State<LoginForm> {
 
     try {
       if (widget.isLogin) {
-        // Simulación de login
         await authProvider.login(email, password);
       } else {
-        // Simulación de registro
         await authProvider.register(email, password);
       }
 
@@ -52,61 +51,64 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
+    final local = AppLocalizations.of(context)!; // 👈 Accedemos a los textos traducidos
 
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          // Campo Email
+          // 🔹 Campo Email
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              labelText: 'Correo electrónico',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: local.emailLabel, // 👈 Traducción del label
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Ingresa tu correo electrónico';
+                return local.emailHint; // 👈 Texto traducido
               }
               if (!value.contains('@')) {
-                return 'Correo inválido';
+                return local.emailInvalid; // 👈 Texto traducido
               }
               return null;
             },
           ),
           const SizedBox(height: 20),
 
-          // Campo Password
+          // 🔹 Campo Password
           TextFormField(
             controller: _passwordController,
             obscureText: true,
-            decoration: const InputDecoration(
-              labelText: 'Contraseña',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: local.passwordLabel, // 👈 Traducción del label
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Ingresa tu contraseña';
+                return local.passwordHint; // 👈 Texto traducido
               }
               if (value.length < 6) {
-                return 'Debe tener al menos 6 caracteres';
+                return local.passwordTooShort; // 👈 Texto traducido
               }
               return null;
             },
           ),
           const SizedBox(height: 30),
 
-          // Botón modular
+          // 🔹 Botón modular (login o registro)
           LoginButton(
             isLoading: authProvider.isLoading,
-            text: widget.isLogin ? 'Iniciar Sesión' : 'Registrarme',
+            text: widget.isLogin
+                ? local.loginButton // 👈 “Ingresar” / “Sign In”
+                : local.registerButton, // 👈 “Registrarme” / “Sign Up”
             onPressed: () => _submit(context),
           ),
 
           const SizedBox(height: 20),
 
-          // Mostrar errores
+          // 🔹 Mostrar errores (sin traducir porque viene del servidor)
           if (authProvider.errorMessage != null)
             Text(
               authProvider.errorMessage!,

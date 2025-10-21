@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
 
 class HomeNavBar extends StatelessWidget {
   final int currentIndex;
@@ -12,18 +13,35 @@ class HomeNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!; // 👈 Acceso a las traducciones
+
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       unselectedItemColor: Colors.grey,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-        BottomNavigationBarItem(icon: Icon(Icons.cabin), label: 'Cabañas'),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Reservas'),
-        BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Clientes'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Ajustes'),
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.home),
+          label: local.home,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.cabin),
+          label: local.cabins,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.calendar_month),
+          label: local.reservations,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.people),
+          label: local.clients, 
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.settings),
+          label: local.settingsTitle,
+        ),
       ],
     );
   }

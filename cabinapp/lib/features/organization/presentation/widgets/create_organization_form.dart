@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cabinapp/features/organization/data/organization_repository.dart';
 import 'package:cabinapp/core/services/local_storage_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import de traducciones
 
 class CreateOrgForm extends StatefulWidget {
   const CreateOrgForm({super.key});
@@ -13,7 +14,7 @@ class CreateOrgForm extends StatefulWidget {
 class _CreateOrgFormState extends State<CreateOrgForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _repo = OrganizationRepository(); // ahora usa mocks
+  final _repo = OrganizationRepository();
   final _localStorage = LocalStorageService();
 
   bool _isLoading = false;
@@ -53,36 +54,48 @@ class _CreateOrgFormState extends State<CreateOrgForm> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!; // 👈 Acceso a las traducciones
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
+            // 🔹 Campo de nombre de la organización
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nombre de la organización',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: local.organizationName, // 👈 “Nombre de la organización” / “Organization name”
+                border: const OutlineInputBorder(),
               ),
               validator: (v) {
                 if (v == null || v.isEmpty) {
-                  return 'Ingresa un nombre válido';
+                  return local.enterValidName; // 👈 “Ingresa un nombre válido” / “Enter a valid name”
                 }
                 return null;
               },
             ),
             const SizedBox(height: 24),
+
+            // 🔹 Botón “Crear organización”
             SizedBox(
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Crear organización'),
+                    : Text(local.createOrganization), 
               ),
             ),
+
+            // 🔹 Mensaje de error (sin traducir porque viene del backend)
             if (_errorMessage != null) ...[
               const SizedBox(height: 16),
               Text(

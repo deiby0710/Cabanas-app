@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:cabinapp/l10n/app_localizations.dart'; 
 
 class ReservationsPage extends StatelessWidget {
   const ReservationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Reservas')),
+      appBar: AppBar(
+        title: Text(local.reservations), // 👈 “Reservas” / “Reservations”
+      ),
       body: ListView.builder(
         itemCount: 5,
         itemBuilder: (context, index) {
@@ -14,9 +19,9 @@ class ReservationsPage extends StatelessWidget {
             margin: const EdgeInsets.all(12),
             child: ListTile(
               leading: const Icon(Icons.calendar_today),
-              title: Text('Reserva #${index + 1}'),
-              subtitle: const Text('Cliente: Juan Pérez'),
-              trailing: const Text('Confirmada'),
+              title: Text('${local.reservation} #${index + 1}'),
+              subtitle: Text('${local.client}: Juan Pérez'),
+              trailing: Text(local.confirmed),
             ),
           );
         },

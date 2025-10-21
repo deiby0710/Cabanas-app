@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cabinapp/features/organization/presentation/widgets/create_organization_form.dart';
 import 'package:cabinapp/features/organization/presentation/widgets/join_organization_form.dart';
+import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import necesario
 
 class SelectOrganizationPage extends StatefulWidget {
   const SelectOrganizationPage({super.key});
@@ -15,10 +16,11 @@ class _SelectOrganizationPageState extends State<SelectOrganizationPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final local = AppLocalizations.of(context)!; // 👈 Obtenemos las traducciones
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Organización'),
+        title: Text(local.organizationTitle), // 👈 “Organización” / “Organization”
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -34,14 +36,14 @@ class _SelectOrganizationPageState extends State<SelectOrganizationPage> {
               onPressed: (index) {
                 setState(() => _showCreateForm = index == 0);
               },
-              children: const [
+              children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Crear nueva'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(local.createNew),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Unirse con código'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(local.joinWithCode),
                 ),
               ],
             ),

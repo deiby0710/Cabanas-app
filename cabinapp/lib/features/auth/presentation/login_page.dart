@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cabinapp/features/auth/presentation/widgets/login_form.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final local = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -26,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
               Icon(Icons.cabin, size: 80, color: theme.colorScheme.primary),
               const SizedBox(height: 16),
               Text(
-                _isLogin ? 'Iniciar Sesión' : 'Crear Cuenta',
+                _isLogin ? local.loginTitle : local.registerTitle,
                 style: theme.textTheme.headlineMedium,
               ),
               const SizedBox(height: 32),
@@ -41,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () => setState(() => _isLogin = !_isLogin),
                 child: Text(
                   _isLogin
-                      ? '¿No tienes cuenta? Regístrate'
-                      : '¿Ya tienes cuenta? Inicia sesión',
+                      ? local.noAccount
+                      : local.alreadyAccount,
                 ),
               ),
             ],

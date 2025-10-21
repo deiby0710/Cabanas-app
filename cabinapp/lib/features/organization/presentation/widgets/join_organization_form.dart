@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cabinapp/features/organization/data/organization_repository.dart';
 import 'package:cabinapp/core/services/local_storage_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
 
 class JoinOrgForm extends StatefulWidget {
   const JoinOrgForm({super.key});
@@ -53,40 +54,52 @@ class _JoinOrgFormState extends State<JoinOrgForm> {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!; // 👈 Obtenemos las traducciones
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
+            // 🔹 Campo código de invitación
             TextFormField(
               controller: _codeController,
               textCapitalization: TextCapitalization.characters,
-              decoration: const InputDecoration(
-                labelText: 'Código de invitación',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: local.invitationCode, // 👈 “Código de invitación” / “Invitation code”
+                border: const OutlineInputBorder(),
               ),
               validator: (v) {
                 if (v == null || v.isEmpty) {
-                  return 'Ingresa un código válido';
+                  return local.enterValidCode; // 👈 “Ingresa un código válido”
                 }
                 if (!v.contains('-')) {
-                  return 'Formato inválido (ejemplo: BOSQUE-1234)';
+                  return local.invalidFormat; // 👈 “Formato inválido...”
                 }
                 return null;
               },
             ),
             const SizedBox(height: 24),
+
+            // 🔹 Botón de envío
             SizedBox(
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Unirme a la organización'),
+                    : Text(local.joinOrganization), // 👈 “Unirme a la organización” / “Join organization”
               ),
             ),
+
+            // 🔹 Mensaje de error si algo falla
             if (_errorMessage != null) ...[
               const SizedBox(height: 16),
               Text(

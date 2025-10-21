@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:cabinapp/core/services/local_storage_service.dart';
 import 'package:cabinapp/features/auth/presentation/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import necesario
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
@@ -21,11 +22,12 @@ class LogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final local = AppLocalizations.of(context)!; // 👈 Acceso a traducciones
 
     return ElevatedButton.icon(
       onPressed: () => _logout(context),
       icon: const Icon(Icons.logout),
-      label: const Text('Cerrar sesión'),
+      label: Text(local.logoutButton), // 👈 “Cerrar sesión” / “Log out”
       style: ElevatedButton.styleFrom(
         backgroundColor: theme.colorScheme.errorContainer,
         foregroundColor: theme.colorScheme.onErrorContainer,

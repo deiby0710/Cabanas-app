@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
+import 'package:cabinapp/features/cabins/presentation/widgets/cabin_card.dart';
 
 class CabinsPage extends StatelessWidget {
   const CabinsPage({super.key});
@@ -7,7 +8,6 @@ class CabinsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final local = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,21 +21,8 @@ class CabinsPage extends StatelessWidget {
           mainAxisSpacing: 16,
           childAspectRatio: 1.1,
         ),
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Center(
-              child: Text(
-                '${local.cabins} ${index + 1}',
-                style: theme.textTheme.titleMedium,
-              ),
-            ),
-          );
-        },
+        itemCount: 5,
+        itemBuilder: (context, index) => CabinCard(index: index), // 👈 modularizado
       ),
     );
   }

@@ -3,49 +3,128 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" 
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Administrador {
-  id       Int       @id @default(autoincrement())
-  nombre   String
-  usuario  String    @unique
-  password String
-  reservas Reserva[]
-}
-
-model Cabana {
-  id       Int       @id @default(autoincrement())
-  nombre   String
-  reservas Reserva[]
-}
-
-model Cliente {
-  id         Int       @id @default(autoincrement())
-  nombre     String
-  celular    String
-  reservas   Reserva[]
-}
-
-model Reserva {
-  id           Int           @id @default(autoincrement())
-  cabanaId     Int
-  clienteId    Int
-  adminId      Int
-  fechaInicio  DateTime
-  fechaFin     DateTime
-  abono        Float
-  numPersonas  Int
-  horaRegistro DateTime      @default(now())
-  estado       EstadoReserva
-
-  cabana        Cabana        @relation(fields: [cabanaId], references: [id])
-  cliente       Cliente       @relation(fields: [clienteId], references: [id])
-  administrador Administrador @relation(fields: [adminId], references: [id])
+// Enums: Constantes
+enum Role {
+  ADMIN
+  MEMBER
 }
 
 enum EstadoReserva {
-  reservada
-  finalizada
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+  COMPLETADA
+}
+
+// Modelos: Tablas de la DB
+
+model Administrador {
+  id            Int      @id @default(autoincrement())
+  nombre        String
+  email         String   @unique
+  password      String?
+  googleId      String?  @unique
+  fechaCreacion DateTime @default(now())
+
+  organizaciones AdministradorOrganizacion[] // Un administrador tiene varias organizaciones
+}
+
+model Organizacion {
+  id               Int      @id @default(autoincrement())
+  nombre           String
+  codigoInvitacion String   @unique
+  fechaCreacion    DateTime @default(now())
+
+  // Relaciones con otros modelos
+  // [] -> Relacion uno a muchos 
+  admins   AdministradorOrganizacion[]
+  cabanas  Cabana[] // Una organización tiene muchas cabañas
+  clientes Cliente[]
+  reservas Reserva[]
+}
+
+model AdministradorOrganizacion {
+  id             Int      @id @default(autoincrement())
+  adminId        Int
+  organizacionId Int
+  rol            Role
+  fechaUnion     DateTime @default(now())
+
+  // Relaciones
+  // Definimos relacion entre AdministradorOrganizacion y Administrador
+  // admin / organizacion -> nombre de las relaciones.
+  // fields -> Clave foranea (PK del otro modelo que se almacena en este modelo)
+  // references -> Referencia a la PK del otro modelo
+  // onDelete: Cascade -> Si se elimina un administrador se elimina todas los registros 
+  admin        Administrador @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  organizacion Organizacion  @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  reservas     Reserva[]
+
+  // Aseguramos que un administrador no puede estar dos veces en la misma organizacion
+  @@unique([adminId, organizacionId])
+  @@index([organizacionId, rol])
+}
+
+model Cabana {
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  capacidad      Int
+  organizacionId Int
+  fechaCreacion  DateTime @default(now())
+
+  organizacion Organizacion @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  reservas     Reserva[]
+
+  //Multi-tenant: Nombres unicos por organizacion.
+  @@unique([organizacionId, nombre])
+  // Para FK desde reserva
+  @@unique([id, organizacionId])
+  @@index([organizacionId])
+}
+
+model Cliente {
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  celular        String
+  organizacionId Int
+  fechaRegistro  DateTime @default(now())
+
+  organizacion Organizacion @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  reservas     Reserva[]
+
+  // Identidad estable multi-tenant
+  @@unique([id, organizacionId])
+  @@index([organizacionId])
+}
+
+model Reserva {
+  id             Int           @id @default(autoincrement())
+  organizacionId Int
+  cabanaId       Int
+  clienteId      Int
+  adminId        Int
+  estado         EstadoReserva
+  fechaInicio    DateTime
+  fechaFin       DateTime
+  abono          Decimal
+  numPersonas    Int
+  createdAt      DateTime      @default(now())
+  updateAt       DateTime      @updatedAt
+
+  // Aislamiento multi-tenant: estas FK exigen que Cabana Cliente pertenezcan a la misma organizacion
+  cabana  Cabana  @relation(fields: [cabanaId, organizacionId], references: [id, organizacionId], onDelete: Restrict)
+  cliente Cliente @relation(fields: [clienteId, organizacionId], references: [id, organizacionId], onDelete: Restrict)
+
+  // El admin que crea la reserva debe pertenecer a la misma organizacion. 
+  // Validamos con la tabla puente.
+  adminOrg AdministradorOrganizacion @relation(fields: [adminId, organizacionId], references: [adminId, organizacionId], onDelete: Restrict)
+
+  organizacion Organizacion @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+
+  @@index([organizacionId, fechaInicio])
+  @@index([cabanaId, fechaInicio])
 }

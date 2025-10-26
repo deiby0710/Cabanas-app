@@ -7,6 +7,7 @@ import clientesRoutes from './routes/clientes.routes.js'
 import cabanasRoutes from './routes/cabanas.routes.js'
 import reservasRoutes from './routes/reservas.routes.js'
 import adminRoutes from './routes/admin.routes.js'
+import organizationRoutes from './routes/organization.routes.js'
 
 
 // Cargamos las variables de .env
@@ -20,6 +21,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/auth', authRoutes)
+app.use('/organization', organizationRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/clientes',clientesRoutes)
 app.use('/api/cabanas',cabanasRoutes)

@@ -1,7 +1,8 @@
 import { 
     loginAdministrador,
     registerAdministrador,
-    loginWithGoogle
+    loginWithGoogle,
+    getAuthenticatedAdmin
  } from "../services/auth.service.js";
 
 export async function login(req, res) {
@@ -76,4 +77,15 @@ export async function loginGoogle(req, res) {
         console.error("Error en login con Google:", error);
         res.status(500).json({ error: "Error al iniciar sesión con Google."})
     }
+}
+
+export async function getMe(req, res) {
+  try {
+    const adminId = req.admin.id;
+    const result = await getAuthenticatedAdmin(adminId);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error al obtener datos del usuario:', error);
+    res.status(500).json({ error: 'Error en el servidor.' });
+  }
 }

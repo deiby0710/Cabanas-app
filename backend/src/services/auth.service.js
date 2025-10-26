@@ -170,3 +170,31 @@ export async function loginWithGoogle({ idToken }) {
         activeOrgId,
     }
 }
+
+export async function getAuthenticatedAdmin(adminId) {
+  const admin = await prisma.administrador.findUnique({
+    where: { id: adminId },
+    include: {
+      organizaciones: {
+        include: { organizacion: true },
+      },
+    },
+  });
+
+  if (!admin) throw new Error('USUARIO_NO_ENCONTRADO');
+
+  const organizations = admin.organizaciones.map(o => ({
+    id: o.organizacionId,
+    nombre: o.organizacion.nombre,
+    rol: o.rol,
+  }));
+
+  return {
+    admin: {
+      id: admin.id,
+      nombre: admin.nombre,
+      email: admin.email,
+    },
+    organizations,
+  };
+}

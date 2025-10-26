@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+// import { findAdminOrganizationRelation } from "../utils/db.js"; Por ahora no
 
 const prisma = new PrismaClient();
 

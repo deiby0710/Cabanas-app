@@ -15,7 +15,15 @@ export function verifyToken(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        req.admin = decoded // Guarda la info del admin en el request
+
+        req.admin = {
+            id: decoded.id,
+            nombre: decoded.nombre,
+            orgId: decoded.orgId,
+            role: decoded.role,
+        }
+
+        req.user = req.admin // Guarda la info del admin en el request
         next()
     } catch (error) {
         return res.status(403).json({ error: 'Token invalido o expirado.'})

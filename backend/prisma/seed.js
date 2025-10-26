@@ -24,7 +24,7 @@ async function main() {
     data: {
       nombre: 'Deiby Delgado',
       email: 'deiby@example.com',
-      password: '123456',
+      password: '$2b$10$YlhTDUjn29cfNAg54PnwCOXd97AH5IbwVws8zcNISsbpWjS2LvBUm', // 123456
     },
   });
 
@@ -40,7 +40,7 @@ async function main() {
     data: {
       nombre: 'Carlos Ruiz',
       email: 'carlos@example.com',
-      password: '123456',
+      password: '$2b$10$YlhTDUjn29cfNAg54PnwCOXd97AH5IbwVws8zcNISsbpWjS2LvBUm', // 123456
     },
   });
 

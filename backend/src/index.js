@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000
 app.use(cors())
 app.use(express.json())
 
-app.use('/api', authRoutes)
+app.use('/auth', authRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/clientes',clientesRoutes)
 app.use('/api/cabanas',cabanasRoutes)

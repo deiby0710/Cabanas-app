@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import { OAuth2Client } from 'google-auth-library';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export async function loginAdministrador ({ email, password }) {
     // Validamos si el usuario existe
@@ -47,7 +49,7 @@ export async function loginAdministrador ({ email, password }) {
             role: admin.organizaciones.find(o => o.organizacionId === activeOrgId)?.rol,
          }, 
         process.env.JWT_SECRET,
-        { expiresIn: '8h'},
+        { expiresIn: '365d'},
     )
 
     return {
@@ -106,5 +108,65 @@ export async function registerAdministrador({ nombre, email, password }) {
             email: admin.email,
         }
     }
+}
 
+export async function loginWithGoogle({ idToken }) {
+    // Verificar token con google
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
+
+    //Buscar si existe
+    let admin = await prisma.administrador.findUnique({ where: { email }});
+
+    if(!admin){
+        //Si no existe creamos uno nuevo
+        admin = await prisma.administrador.create({
+            data: {
+                nombre: name,
+                email,
+                googleId,
+            }
+        });
+    };
+    
+    // Buscar organizaciones asociadas 
+    const orgs = await prisma.administradorOrganizacion.findMany({
+        where: { adminId: admin.id },
+        include: {organizacion: true}
+    });
+
+    const organizations = orgs.map( o => ({
+        id: o.organizacionId,
+        nombre: o.organizacion.nombre,
+        rol: o.rol,
+    }));
+
+    const activeOrgId = organizations[0]?.id || null;;
+
+    // Creamos token
+    const token = jwt.sign(
+        {
+            id: admin.id,
+            nombre: admin.nombre,
+            orgId: activeOrgId,
+            role: organizations.find(o => o.id === activeOrgId)?.rol || null
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '365d'}
+    ); 
+    return {
+        token,
+        admin: {
+            id: adminId,
+            nombre: admin.nombre,
+            email: admin.email,
+        },
+        organizations,
+        activeOrgId,
+    }
 }

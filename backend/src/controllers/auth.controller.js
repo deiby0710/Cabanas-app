@@ -1,6 +1,7 @@
 import { 
     loginAdministrador,
-    registerAdministrador
+    registerAdministrador,
+    loginWithGoogle
  } from "../services/auth.service.js";
 
 export async function login(req, res) {
@@ -51,5 +52,28 @@ export async function register(req, res) {
         }
         console.error('Error en el registro: ', error);
         res.status(500).json({ error: 'Error en el servidor.' });
+    }
+}
+
+export async function loginGoogle(req, res) {
+    const { idToken } = req.body;
+
+    if(!idToken) {
+        return res.status(400).json({ error: 'Token de google no proporcionado.'});
+    }
+
+    try {
+        const { token, admin, organizations, activeOrgId } = await loginWithGoogle({ idToken})
+
+        res.status(200).json({
+            message: "Inicio de sesión con Google exitoso.",
+            token,
+            admin,
+            organizations,
+            activeOrgId,
+        });
+    } catch (error) {
+        console.error("Error en login con Google:", error);
+        res.status(500).json({ error: "Error al iniciar sesión con Google."})
     }
 }

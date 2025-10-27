@@ -24,7 +24,7 @@ app.use('/auth', authRoutes)
 app.use('/organization', organizationRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/clientes',clientesRoutes)
-app.use('/api/cabanas',cabanasRoutes)
+app.use('/cabins',cabanasRoutes)
 app.use('/api/reservas', reservasRoutes)
 
 app.get('/', (req, res) => {

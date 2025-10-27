@@ -23,7 +23,7 @@ app.use(express.json())
 app.use('/auth', authRoutes)
 app.use('/organization', organizationRoutes)
 app.use('/api/admin', adminRoutes)
-app.use('/api/clientes',clientesRoutes)
+app.use('/customers',clientesRoutes)
 app.use('/cabins',cabanasRoutes)
 app.use('/api/reservas', reservasRoutes)
 

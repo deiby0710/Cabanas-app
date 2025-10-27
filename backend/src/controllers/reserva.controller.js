@@ -1,146 +1,192 @@
-import { crearReserva,
-        observarReservas, 
-        obtenerReservaPorId, 
-        actualizarReserva,
-        eliminarReserva
+import { 
+    createReservationService,
+    listReservationsService,
+    getReservationByIdService,
+    updateReservationService,
+    deleteReservationService
     } from "../services/reserva.service.js";
 import { convertirFechaUTC } from "../utils/fecha.js";
 
-export async function postReserva(req, res) {
-    const {
-        cabanaId,
-        clienteId,
-        fechaInicio,
-        fechaFin,
-        abono,
-        numPersonas,
-        estado
-    } = req.body
-
-    const adminId = req.admin.id // Viene con el token
-
-    if(!cabanaId||!clienteId||!fechaInicio||!abono||!numPersonas) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios.'})
-    }
-
-    // Validar que la fecha no este en el pasado
-    const hoy = new Date();
-    const inicio = convertirFechaUTC(fechaInicio)
-    const fin = fechaFin? convertirFechaUTC(fechaFin): inicio
-    hoy.setUTCHours(0, 0, 0, 0)
-
-    if(inicio < hoy){
-        return res.status(400).json({ error: 'No puedes reservar en fechas pasadas.' })
-    }
-
-    if (fin < inicio) {
-        return res.status(400).json({ error: 'La fecha de fin debe ser posterior a la de inicio.' })
-    }
-
+export async function createReservation(req, res) {
     try {
-        const reserva = await crearReserva({
-            cabanaId: Number(cabanaId),
-            clienteId: Number(clienteId),
-            fechaInicio: inicio,
-            fechaFin: fin,
-            abono: Number(abono),
-            numPersonas: Number(numPersonas),
-            estado: estado || 'reservada',
-            adminId
-        })
-
-        res.status(201).json({
-            message: 'Reserva creada exitosamente.',
-            reserva
-        })
-    } catch (error) {
-        if (error.message === 'RESERVA_SUPERPUESTA') {
-            return res.status(400).json({ error: 'Ya existe una reserva para esta cabaña en la fecha seleccionada.'})
-        }
-        console.error(error)
-        res.status(500).json({ error: 'Error al crear la reserva.'})
-    }
-}
-
-export async function getReservas(req, res){
-    try {
-        const reservas = await observarReservas()
-        res.json(reservas)
-    } catch (error) {
-        console.error('Error al obtener las reservas: ', error)
-        res.status(500).json({ error: 'Error al obtener las reservas.'})
-    }
-}
-
-export async function getReservasById(req, res){
-    const { id } = req.params
-
-    try {
-        const reserva = await obtenerReservaPorId(Number(id));
-        res.json(reserva)
-    } catch (error) {
-        if (error.message === 'RESERVA_NO_ENCONTRADA'){
-            return res.status(404).json({ error: 'Reserva no encontrada.'})
-        }
-        console.error('Error al obtener la reserva: ', error)
-        res.status(500).json({ error: 'Error al obtener la reserva.'})
-    }
-}
-
-export async function putReserva(req, res){
-    const { id } = req.params;
-    const {
-        cabanaId,
-        clienteId,
-        fechaInicio,
-        fechaFin,
-        abono,
-        numPersonas,
-        estado
-    } = req.body
-    const adminId = req.admin.id
-
-    if (!cabanaId || !clienteId || !fechaInicio || !abono || !numPersonas) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios.' })
-    }
-    try {
-        const reserva = await actualizarReserva(Number(id), {
-            cabanaId: Number(cabanaId),
-            clienteId: Number(clienteId),
+        const adminId = req.admin.id;
+        const {
+            organizacionId,
+            cabanaId,
+            clienteId,
             fechaInicio,
             fechaFin,
-            abono: Number(abono),
-            numPersonas: Number(numPersonas),
-            estado: estado || 'reservada',
-            adminId
-        })
-        res.json({
-            message: 'Reserva actualizada exitosamente.',
-            reserva
-        })
-    } catch (error) {
-        if(error.message === 'RESERVA_SUPERPUESTA') {
-            return res.status(400).json({ error: 'Las fechas se superponen con otra reserva.'})
+            abono,
+            numPersonas
+        } = req.body;
+
+        if (!organizacionId || !cabanaId || !clienteId || !fechaInicio || !fechaFin) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios.' });
         }
-        console.error(error)
-        res.status(500).json({ error: 'Error al actualizar la reserva.' })
+
+        if (new Date(fechaInicio) >= new Date(fechaFin)) {
+            return res.status(400).json({ error: 'La fecha de inicio debe ser menor que la fecha de fin.' });
+        }
+
+        const reservation = await createReservationService(adminId, {
+            organizacionId,
+            cabanaId,
+            clienteId,
+            fechaInicio: new Date(fechaInicio),
+            fechaFin: new Date(fechaFin),
+            abono: abono || 0,
+            numPersonas: numPersonas || 1
+        });
+
+        if (!reservation) {
+            return res.status(403).json({ error: 'No tienes permisos o los datos son inválidos.' });
+        }
+
+        res.status(201).json({
+            message: 'Reserva creada correctamente.',
+            reservation,
+        });
+    } catch (error) {
+        console.error('Error al crear reserva:', error);
+        res.status(500).json({ error: 'Error en el servidor.' });
     }
 }
 
-export async function deleteReserva(req, res) {
-    const { id } = req.params
-
+export async function listReservations(req, res) {
     try {
-        const reservaEliminada = await eliminarReserva(Number(id))
-        res.json({
-            message: 'Reserva eliminada exitosamente.',
-            reserva: reservaEliminada
-        })
-    } catch (error) {
-        if(error.message === 'RESERVA_NO_ENCONTRADA'){
-            return res.status(404).json({ error: 'La reserva no existe.' })
+        const adminId = req.admin.id;
+        const orgId = parseInt(req.params.orgId);
+
+        // Query params opcionales
+        const { estado, cabanaId, clienteId, desde, hasta } = req.query;
+
+        const filters = {
+            estado: estado || null,
+            cabanaId: cabanaId ? parseInt(cabanaId) : null,
+            clienteId: clienteId ? parseInt(clienteId) : null,
+            desde: desde ? new Date(desde) : null,
+            hasta: hasta ? new Date(hasta) : null,
+        };
+
+        const reservations = await listReservationsService(adminId, orgId, filters);
+
+        if (!reservations) {
+            return res.status(403).json({ error: 'No tienes acceso a esta organización.' });
         }
-        console.error(error)
-        res.status(500).json({error: 'Error al eliminar la reserva.'})
+
+        res.status(200).json({
+            message: 'Reservas obtenidas correctamente.',
+            filters: filters,
+            reservations,
+        });
+    } catch (error) {
+        console.error('Error al listar reservas:', error);
+        res.status(500).json({ error: 'Error en el servidor.' });
+    }
+}
+
+export async function getReservationById(req, res) {
+    try {
+        const adminId = req.admin.id;
+        const orgId = parseInt(req.params.orgId);
+        const reservaId = parseInt(req.params.reservaId);
+
+        const reservation = await getReservationByIdService(adminId, orgId, reservaId);
+
+        if (!reservation) {
+            return res.status(403).json({ error: 'No tienes acceso o la reserva no existe.' });
+        }
+
+        res.status(200).json({
+            message: 'Reserva obtenida correctamente.',
+            reservation,
+        });
+    } catch (error) {
+        console.error('Error al obtener reserva:', error);
+        res.status(500).json({ error: 'Error en el servidor.' });
+    }
+}
+
+
+export async function updateReservation(req, res) {
+    try {
+        const adminId = req.admin.id;
+        const orgId = parseInt(req.params.orgId);
+        const reservaId = parseInt(req.params.reservaId);
+
+        // Campos opcionales
+        const {
+        estado,           // 'PENDIENTE' | 'CONFIRMADA' | 'CANCELADA' | 'COMPLETADA'
+        fechaInicio,
+        fechaFin,
+        abono,
+        numPersonas,
+        cabanaId,
+        clienteId,
+        } = req.body;
+
+        // Validación simple de fechas si vienen ambas
+        if (fechaInicio && fechaFin && new Date(fechaInicio) >= new Date(fechaFin)) {
+        return res.status(400).json({ error: 'La fecha de inicio debe ser menor que la fecha de fin.' });
+        }
+
+        const updated = await updateReservationService(adminId, orgId, reservaId, {
+            estado,
+            fechaInicio: fechaInicio ? new Date(fechaInicio) : undefined,
+            fechaFin:    fechaFin ? new Date(fechaFin) : undefined,
+            abono,
+            numPersonas,
+            cabanaId,
+            clienteId,
+        });
+
+        if (updated === 'NO_PERMISSION') {
+            return res.status(403).json({ error: 'No tienes permisos para modificar reservas en esta organización.' });
+        }
+        if (updated === 'NOT_FOUND') {
+            return res.status(404).json({ error: 'La reserva no existe en esta organización.' });
+        }
+        if (updated === 'INVALID_CABIN') {
+            return res.status(400).json({ error: 'La cabaña no pertenece a la organización.' });
+        }
+        if (updated === 'INVALID_CUSTOMER') {
+            return res.status(400).json({ error: 'El cliente no pertenece a la organización.' });
+        }
+        if (updated === 'DATE_OVERLAP') {
+            return res.status(409).json({ error: 'La cabaña ya tiene una reserva en ese rango de fechas.' });
+        }
+
+        res.status(200).json({
+            message: 'Reserva actualizada correctamente.',
+            reservation: updated,
+        });
+    } catch (error) {
+        console.error('Error al actualizar reserva:', error);
+        res.status(500).json({ error: 'Error en el servidor.' });
+    }
+}
+
+export async function deleteReservation(req, res) {
+    try {
+        const adminId = req.admin.id;
+        const orgId = parseInt(req.params.orgId);
+        const reservaId = parseInt(req.params.reservaId);
+
+        const result = await deleteReservationService(adminId, orgId, reservaId);
+
+        if (result === 'NO_PERMISSION') {
+            return res.status(403).json({ error: 'No tienes permisos para eliminar reservas.' });
+        }
+        if (result === 'NOT_FOUND') {
+           return res.status(404).json({ error: 'La reserva no existe o no pertenece a esta organización.' });
+        }
+        if (result === 'COMPLETED_BLOCKED') {
+            return res.status(400).json({ error: 'No se puede eliminar una reserva completada.' });
+        }
+
+        res.status(200).json({ message: 'Reserva eliminada correctamente.' });
+    } catch (error) {
+        console.error('Error al eliminar reserva:', error);
+        res.status(500).json({ error: 'Error en el servidor.' });
     }
 }

@@ -25,7 +25,7 @@ app.use('/organization', organizationRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/customers',clientesRoutes)
 app.use('/cabins',cabanasRoutes)
-app.use('/api/reservas', reservasRoutes)
+app.use('/reservations', reservasRoutes)
 
 app.get('/', (req, res) => {
     res.send('API funcionando correctamente por: Deiby Alejandro')

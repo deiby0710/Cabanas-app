@@ -26,27 +26,31 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Future<void> _submit(BuildContext context) async {
-    final authProvider = context.read<AuthProvider>();
+  final authProvider = context.read<AuthProvider>();
 
-    if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
+  final email = _emailController.text.trim();
+  final password = _passwordController.text.trim();
 
-    try {
-      if (widget.isLogin) {
-        await authProvider.login(email, password);
-      } else {
-        await authProvider.register(email, password);
-      }
-
-      if (authProvider.user != null && mounted) {
-        context.go('/selectOrganization');
-      }
-    } catch (e) {
-      debugPrint('❌ Error en login/registro: $e');
+  try {
+    if (widget.isLogin) {
+      await authProvider.login(email, password);
+    } else {
+      // 🔹 Por ahora mostramos un mensaje temporal
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Registro aún no implementado')),
+      );
+      return;
     }
+
+    if (authProvider.user != null && mounted) {
+      context.go('/selectOrganization');
+    }
+  } catch (e) {
+    debugPrint('❌ Error en login: $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {

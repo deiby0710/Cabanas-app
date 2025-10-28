@@ -1,101 +1,87 @@
 import 'package:flutter/material.dart';
-
-/// Simulación de usuarios registrados (mock backend)
-final List<Map<String, String>> mockUsers = [
-  {
-    'email': 'deibyalejandro10@gmail.com',
-    'password': '123456',
-    'role': 'admin',
-  },
-  {
-    'email': 'user@bosque.com',
-    'password': '123456',
-    'role': 'member',
-  },
-];
-
-/// Clase que representa un usuario autenticado en memoria
-class MockUser {
-  final String email;
-  final String role;
-
-  MockUser({required this.email, required this.role});
-}
+import '../../data/auth_repository.dart';
+import '../../data/models/user_model.dart';
+import 'package:cabinapp/core/storage/secure_storage_service.dart';
 
 class AuthProvider extends ChangeNotifier {
-  MockUser? _user;
+  final AuthRepository _authRepository;
+  final SecureStorageService _secureStorage = SecureStorageService();
+
+  AuthProvider(this._authRepository);
+
+  UserModel? _user;
   bool _isLoading = false;
   String? _errorMessage;
+  bool _isInitialized = false; // Para saber si ya intentamos auto-login
 
-  MockUser? get user => _user;
+  UserModel? get user => _user;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+  bool get isInitialized => _isInitialized;
 
-  // 🔹 Login simulado
+  // 🔹 LOGIN
   Future<void> login(String email, String password) async {
     _setLoading(true);
-
-    await Future.delayed(const Duration(seconds: 1)); // simula tiempo de red
-
     try {
-      final foundUser = mockUsers.firstWhere(
-        (u) => u['email'] == email && u['password'] == password,
-        orElse: () => {},
-      );
-
-      if (foundUser.isEmpty) {
-        throw Exception('Credenciales inválidas');
-      }
-
-      _user = MockUser(
-        email: foundUser['email']!,
-        role: foundUser['role']!,
-      );
-
+      final loggedUser = await _authRepository.login(email, password);
+      _user = loggedUser;
       _errorMessage = null;
     } catch (e) {
-      _errorMessage = 'Usuario o contraseña incorrectos';
       _user = null;
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
     } finally {
       _setLoading(false);
     }
   }
 
-  // 🔹 Registro simulado
+  // 🔹 REGISTER
   Future<void> register(String email, String password) async {
     _setLoading(true);
-    await Future.delayed(const Duration(seconds: 1));
-
     try {
-      final exists = mockUsers.any((u) => u['email'] == email);
-      if (exists) {
-        throw Exception('El usuario ya existe');
-      }
-
-      // Agregamos el nuevo usuario al mock
-      mockUsers.add({
-        'email': email,
-        'password': password,
-        'role': 'member',
-      });
-
-      _user = MockUser(email: email, role: 'member');
+      final newUser = await _authRepository.register(email, password);
+      _user = newUser;
       _errorMessage = null;
     } catch (e) {
-      _errorMessage = 'El usuario ya existe';
       _user = null;
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
     } finally {
       _setLoading(false);
     }
   }
 
-  // 🔹 Logout
+  // 🔹 AUTO-LOGIN
+  Future<void> tryAutoLogin() async {
+    _setLoading(true);
+    try {
+      final token = await _secureStorage.readAccessToken();
+      if (token == null) {
+        _user = null;
+        return;
+      }
+
+      final user = await _authRepository.getCurrentUser();
+      _user = user;
+      _errorMessage = null;
+    } catch (e) {
+      // Si falla (token expirado o inválido), limpiamos
+      await _secureStorage.deleteAccessToken();
+      _user = null;
+      _errorMessage = null;
+    } finally {
+      _isInitialized = true;
+      _setLoading(false);
+    }
+  }
+
+  // 🔹 LOGOUT
   Future<void> logout() async {
+    await _secureStorage.deleteAccessToken();
     _user = null;
+    _errorMessage = null;
     notifyListeners();
   }
 
-  // 🔹 Actualiza estado de carga
+  // 🔹 Estado de carga
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

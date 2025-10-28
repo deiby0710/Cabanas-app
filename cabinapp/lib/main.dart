@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/core/routes/app_router.dart';
 import 'package:cabinapp/features/auth/presentation/providers/auth_provider.dart';
+import 'package:cabinapp/features/auth/data/auth_repository.dart';
+import 'package:cabinapp/core/network/api_client.dart';
 import 'package:cabinapp/core/theme/theme_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -18,8 +19,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()), 
+        // ✅ Aquí creamos el AuthProvider con el AuthRepository conectado al ApiClient
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(
+            AuthRepository(dio: ApiClient.build()),
+          ),
+        ),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {
@@ -47,7 +53,6 @@ class MyApp extends StatelessWidget {
               Locale('en'),
               Locale('es'),
             ],
-            // locale: const Locale('es'), // idioma por defecto (opcional)
           );
         },
       ),

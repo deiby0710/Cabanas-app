@@ -1,7 +1,8 @@
+import 'package:cabinapp/features/organization/presentation/widgets/my_organizations_list.dart';
 import 'package:flutter/material.dart';
-import 'package:cabinapp/core/services/local_storage_service.dart';
-import 'package:cabinapp/features/organization/data/organization_repository.dart';
-import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import para traducciones
+import 'package:provider/provider.dart';
+import 'providers/organization_provider.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
 
 class OrganizationOverviewPage extends StatefulWidget {
   const OrganizationOverviewPage({super.key});
@@ -12,55 +13,37 @@ class OrganizationOverviewPage extends StatefulWidget {
 }
 
 class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
-  final _repo = OrganizationRepository();
-  final _localStorage = LocalStorageService();
-
-  Map<String, dynamic>? _organization;
-  bool _isLoading = true;
-  String? _error;
-
   @override
   void initState() {
     super.initState();
-    _loadData();
-  }
+    final orgProvider = context.read<OrganizationProvider>();
 
-  Future<void> _loadData() async {
-    try {
-      final orgId = await _localStorage.getOrgId();
-      if (orgId == null) throw Exception('noActiveOrganization'); // 👈 traducible
+    // 🔹 Cargar organización activa
+    Future.microtask(() => orgProvider.loadActiveOrganization());
 
-      // 🔹 Buscar la organización en el mock por ID
-      final orgData = _repo.getOrganizationById(orgId);
-
-      setState(() {
-        _organization = orgData;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-    }
+    // 🔹 Cargar lista de mis organizaciones
+    Future.microtask(() => orgProvider.getMyOrganizations());
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final local = AppLocalizations.of(context)!; // 👈 Obtenemos traducciones
+    final local = AppLocalizations.of(context)!;
+    final orgProvider = context.watch<OrganizationProvider>();
 
-    if (_isLoading) {
+    final organization = orgProvider.activeOrganization;
+
+    if (orgProvider.isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    if (_error != null) {
+    if (organization == null) {
       return Scaffold(
         body: Center(
           child: Text(
-            '${local.errorLabel}: $_error', // 👈 “Error” / “Error”
+            local.noActiveOrganization, // 👈 “No hay organización activa”
             style: const TextStyle(color: Colors.red),
           ),
         ),
@@ -69,51 +52,65 @@ class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(local.organizationTitle), // 👈 “Organización” / “Organization”
+        title: Text(local.organizationTitle),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _organization?['name'] ?? local.noName, // 👈 “Sin nombre” / “No name”
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
+        child: SingleChildScrollView( // 👈 para permitir scroll si hay muchas orgs
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 🔹 Nombre de la organización
+              Text(
+                organization.nombre,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${local.invitationCode}: ${_organization?['inviteCode']}', // 👈 “Código de invitación” / “Invitation code”
-              style: const TextStyle(fontSize: 16),
-            ),
-            const Divider(height: 32),
-            Text(
-              '${local.members}:', // 👈 “Miembros:” / “Members:”
-              style: theme.textTheme.titleLarge,
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView.separated(
-                itemCount: (_organization?['users'] as List).length,
-                separatorBuilder: (_, __) => const Divider(),
-                itemBuilder: (context, index) {
-                  final member =
-                      (_organization?['users'] as List<Map<String, dynamic>>)[index];
-                  return ListTile(
-                    leading: const Icon(Icons.person),
-                    title: Text(member['id']),
-                    subtitle: Text(
-                      '${local.roleLabel}: ${member['role']}', // 👈 “Rol:” / “Role:”
-                    ),
+              const SizedBox(height: 8),
+
+              // 🔹 Código de invitación
+              Text(
+                '${local.invitationCode}: ${organization.codigoInvitacion}',
+                style: const TextStyle(fontSize: 16),
+              ),
+
+              const Divider(height: 32),
+
+              // 🔹 Info básica (por ahora sin miembros)
+              Text(
+                '${local.roleLabel}: ${organization.role ?? "ADMIN"}',
+                style: theme.textTheme.titleLarge,
+              ),
+
+              const SizedBox(height: 16),
+
+              // 🔹 Botón para limpiar organización activa
+              ElevatedButton.icon(
+                onPressed: () async {
+                  await context.read<OrganizationProvider>().clearActiveOrganization();
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(local.organizationCleared)),
                   );
                 },
+                icon: const Icon(Icons.logout),
+                label: Text(local.removeOrganization),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.error,
+                  foregroundColor: Colors.white,
+                ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 32),
+
+              // 👇 NUEVA SECCIÓN
+              const MyOrganizationsList(),
+            ],
+          ),
         ),
       ),
     );

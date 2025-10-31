@@ -331,6 +331,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirmed'**
   String get confirmed;
+
+  /// No description provided for @organizationCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization cleared from session'**
+  String get organizationCleared;
+
+  /// No description provided for @removeOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove organization'**
+  String get removeOrganization;
+
+  /// No description provided for @alreadyInOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'You already belong to this organization.'**
+  String get alreadyInOrganization;
+
+  /// No description provided for @joinOrganizationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error joining the organization'**
+  String get joinOrganizationError;
+
+  /// No description provided for @joinOrganizationUnexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected error joining the organization'**
+  String get joinOrganizationUnexpectedError;
+
+  /// No description provided for @myOrganizations.
+  ///
+  /// In en, this message translates to:
+  /// **'My organizations'**
+  String get myOrganizations;
+
+  /// No description provided for @organizationSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization selected'**
+  String get organizationSelected;
+
+  /// No description provided for @noOrganizationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t belong to any organization yet'**
+  String get noOrganizationsYet;
 }
 
 class _AppLocalizationsDelegate

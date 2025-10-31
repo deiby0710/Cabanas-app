@@ -7,8 +7,10 @@ class ApiConstants {
   static const me = '/auth/getMe';
 
   // ---- Organizations ----
-  static const organizations = '/organizations';
-  static const joinOrganization = '/organizations/join';
+  static const createOrganization = '/organization/create';
+  static const joinOrganization = '/organization/join';
+  static const myOrganizations = '/organization/my';
+  static const organizationById = '/organization';
 
   // ---- Otros módulos ----
   static const cabins = '/cabins';

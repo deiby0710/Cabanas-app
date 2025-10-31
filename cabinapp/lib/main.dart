@@ -1,3 +1,5 @@
+import 'package:cabinapp/features/organization/data/organization_repository.dart';
+import 'package:cabinapp/features/organization/presentation/providers/organization_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/core/routes/app_router.dart';
@@ -26,6 +28,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(
+          create: (_) => OrganizationProvider(
+            OrganizationRepository(dio: ApiClient.build()),
+          ),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

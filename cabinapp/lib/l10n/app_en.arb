@@ -37,5 +37,14 @@
   "roleLabel": "Role",
   "reservation": "Reservation",
   "client": "Client",
-  "confirmed": "Confirmed"
+  "confirmed": "Confirmed",
+  "organizationCleared": "Organization cleared from session",
+  "removeOrganization": "Remove organization",
+  "alreadyInOrganization": "You already belong to this organization.",
+  "joinOrganizationError": "Error joining the organization",
+  "joinOrganizationUnexpectedError": "Unexpected error joining the organization",
+  "myOrganizations": "My organizations",
+  "organizationSelected": "Organization selected",
+  "roleLabel": "Role",
+  "noOrganizationsYet": "You don't belong to any organization yet"
 }

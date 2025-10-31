@@ -124,4 +124,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get confirmed => 'Confirmada';
+
+  @override
+  String get organizationCleared => 'Organización eliminada de la sesión';
+
+  @override
+  String get removeOrganization => 'Eliminar organización';
+
+  @override
+  String get alreadyInOrganization => 'Ya perteneces a esta organización.';
+
+  @override
+  String get joinOrganizationError => 'Error al unirse a la organización';
+
+  @override
+  String get joinOrganizationUnexpectedError =>
+      'Error inesperado al unirse a la organización';
+
+  @override
+  String get myOrganizations => 'Mis organizaciones';
+
+  @override
+  String get organizationSelected => 'Organización seleccionada';
+
+  @override
+  String get noOrganizationsYet => 'Aún no perteneces a ninguna organización';
 }

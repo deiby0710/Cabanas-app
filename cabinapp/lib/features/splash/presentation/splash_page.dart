@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/features/splash/presentation/widgets/splash_logo.dart';
 import 'package:cabinapp/features/auth/presentation/providers/auth_provider.dart';
+import 'package:cabinapp/features/organization/presentation/providers/organization_provider.dart'; // 👈 IMPORTANTE
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -21,22 +22,34 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _initializeApp() async {
     final authProvider = context.read<AuthProvider>();
+    final orgProvider = context.read<OrganizationProvider>(); // 👈 Agregado
 
-    // 🔹 Espera un poquito para mostrar el logo
+    // 🔹 Mostrar el logo unos segundos
     await Future.delayed(const Duration(seconds: 2));
 
-    // 🔹 Verifica si hay un token guardado y la sesión sigue activa
+    // 🔹 Intentar autologin
     await authProvider.tryAutoLogin();
 
-    // 🔹 Espera unos segundos más para una transición suave
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) return;
-
-    // 🔹 Si hay usuario, ir al home u organización; si no, al login
+    // 🔹 Si el usuario está autenticado, verificamos la organización activa
     if (authProvider.user != null) {
-      context.go('/selectOrganization');
+      await orgProvider.loadActiveOrganization(); // 👈 Nuevo paso
+
+      // 🔹 Espera unos segundos más para una transición suave
+      await Future.delayed(const Duration(seconds: 2));
+
+      if (!mounted) return;
+
+      // ✅ Si hay una organización activa, ir directamente al home
+      if (orgProvider.activeOrganization != null) {
+        context.go('/home');
+      } else {
+        // 🚪 Si no hay organización, ir a seleccionar o crear
+        context.go('/selectOrganization');
+      }
     } else {
+      // ❌ No hay sesión, ir al login
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
       context.go('/login');
     }
   }

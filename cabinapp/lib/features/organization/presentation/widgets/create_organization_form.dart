@@ -49,35 +49,47 @@ class _CreateOrgFormState extends State<CreateOrgForm> {
   @override
   Widget build(BuildContext context) {
     final orgProvider = context.watch<OrganizationProvider>();
+    final theme = Theme.of(context);
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _nameController,
-            decoration: const InputDecoration(
-              labelText: 'Organization name',
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Organization name',
+                border: const OutlineInputBorder(),
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.surface, // opcional: para mantener consistencia de fondo
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingresa un nombre válido';
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Ingresa un nombre válido';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: orgProvider.isLoading ? null : _submit,
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 48),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: orgProvider.isLoading ? null : _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                ),
+                child: orgProvider.isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Create organization'),
+              ),
             ),
-            child: orgProvider.isLoading
-                ? const CircularProgressIndicator()
-                : const Text('Create organization'),
-          ),
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
 }

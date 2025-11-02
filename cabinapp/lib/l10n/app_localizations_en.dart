@@ -150,4 +150,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOrganizationsYet => 'You don\'t belong to any organization yet';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get enterName => 'Please enter your name';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm password';
+
+  @override
+  String get confirmPasswordHint => 'Repeat your password';
+
+  @override
+  String get passwordsDontMatch => 'Passwords do not match';
+
+  @override
+  String get registrationSuccess => 'Registration successful';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account? Sign up here';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Log in';
+
+  @override
+  String get welcomeBack => 'Welcome back!';
+
+  @override
+  String get signInToContinue => 'Sign in to continue.';
+
+  @override
+  String get createAccount => 'Create your account';
+
+  @override
+  String get startExperience => 'Start your CabinApp experience.';
 }

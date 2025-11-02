@@ -46,5 +46,17 @@
   "myOrganizations": "My organizations",
   "organizationSelected": "Organization selected",
   "roleLabel": "Role",
-  "noOrganizationsYet": "You don't belong to any organization yet"
+  "noOrganizationsYet": "You don't belong to any organization yet",
+  "nameLabel": "Name",
+  "enterName": "Please enter your name",
+  "confirmPasswordLabel": "Confirm password",
+  "confirmPasswordHint": "Repeat your password",
+  "passwordsDontMatch": "Passwords do not match",
+  "registrationSuccess": "Registration successful",
+  "dontHaveAccount": "Don't have an account? Sign up here",
+  "alreadyHaveAccount": "Already have an account? Log in",
+  "welcomeBack": "Welcome back!",
+  "signInToContinue": "Sign in to continue.",
+  "createAccount": "Create your account",
+  "startExperience": "Start your CabinApp experience."
 }

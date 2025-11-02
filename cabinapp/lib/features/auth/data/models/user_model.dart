@@ -1,12 +1,12 @@
 class UserModel {
   final String id;
   final String email;
-  final String role;
+  final String? role;
 
   UserModel({
     required this.id,
     required this.email,
-    required this.role,
+    this.role,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {

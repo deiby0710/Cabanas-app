@@ -35,10 +35,10 @@ class AuthProvider extends ChangeNotifier {
   }
 
   // 🔹 REGISTER
-  Future<void> register(String email, String password) async {
+  Future<void> register(String nombre, String email, String password) async {
     _setLoading(true);
     try {
-      final newUser = await _authRepository.register(email, password);
+      final newUser = await _authRepository.register(nombre, email, password);
       _user = newUser;
       _errorMessage = null;
     } catch (e) {

@@ -64,28 +64,26 @@ class AuthRepository {
   }
 
   // 🔹 REGISTER (ajustado por compatibilidad, si tu backend devuelve lo mismo)
-  Future<UserModel> register(String email, String password) async {
+  Future<UserModel> register(String nombre, String email, String password) async {
     try {
       final response = await _dio.post(
         ApiConstants.register,
         data: {
+          'nombre': nombre,
           'email': email,
           'password': password,
         },
       );
 
       final data = response.data as Map<String, dynamic>;
-      final token = data['token'] ?? data['accessToken'];
-      final userJson = data['admin'] ?? data['user'];
+      final token = data['token'];
+      final userJson = data['admin'];
 
       await _secureStorage.saveAccessToken(token);
 
       return UserModel(
         id: userJson['id'].toString(),
         email: userJson['email'] ?? '',
-        role: (data['organizations'] != null && data['organizations'].isNotEmpty)
-            ? data['organizations'][0]['rol'] ?? 'USER'
-            : 'USER',
       );
     } on DioException catch (e) {
       final message = e.response?.data?['message'] ?? 'Error al registrar usuario';

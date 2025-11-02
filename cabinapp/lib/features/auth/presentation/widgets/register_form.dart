@@ -4,24 +4,29 @@ import 'package:provider/provider.dart';
 import 'package:cabinapp/features/auth/presentation/providers/auth_provider.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
+  final _nombreController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {
+    _nombreController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -30,17 +35,21 @@ class _LoginFormState extends State<LoginForm> {
 
     if (!_formKey.currentState!.validate()) return;
 
+    final nombre = _nombreController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     try {
-      await authProvider.login(email, password);
+      await authProvider.register(nombre, email, password);
 
       if (authProvider.user != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Registro exitoso')),
+        );
         context.go('/selectOrganization');
       }
     } catch (e) {
-      debugPrint('❌ Error en login: $e');
+      debugPrint('❌ Error en registro: $e');
     }
   }
 
@@ -54,13 +63,31 @@ class _LoginFormState extends State<LoginForm> {
       key: _formKey,
       child: Column(
         children: [
+          // 🔹 Nombre
+          TextFormField(
+            controller: _nombreController,
+            decoration: InputDecoration(
+              labelText: local.nameLabel,
+              prefixIcon: const Icon(Icons.person_outline),
+              border: const OutlineInputBorder(),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return local.enterName; // “Ingresa tu nombre”
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+
+          // 🔹 Email 
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               labelText: local.emailLabel,
-              border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.email_outlined),
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -72,19 +99,19 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+
+          // 🔹 Contraseña
           TextFormField(
             controller: _passwordController,
             obscureText: !_isPasswordVisible,
             decoration: InputDecoration(
               labelText: local.passwordLabel,
-              border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.lock_outline),
+              border: const OutlineInputBorder(),
               suffixIcon: IconButton(
                 icon: Icon(
-                  _isPasswordVisible
-                      ? Icons.visibility_off
-                      : Icons.visibility,
+                  _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
                 ),
                 onPressed: () {
                   setState(() {
@@ -103,7 +130,42 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 16),
+
+          // 🔹 Confirmar contraseña
+          TextFormField(
+            controller: _confirmPasswordController,
+            obscureText: !_isConfirmPasswordVisible,
+            decoration: InputDecoration(
+              labelText: local.confirmPasswordLabel, // “Confirmar contraseña”
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.lock_person_outlined),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isConfirmPasswordVisible
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                  });
+                },
+              ),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return local.confirmPasswordHint; // “Repite tu contraseña”
+              }
+              if (value != _passwordController.text) {
+                return local.passwordsDontMatch; // “Las contraseñas no coinciden”
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 24),
+
+          // 🔹 Botón de registro
           SizedBox(
             width: double.infinity,
             height: 48,
@@ -117,10 +179,13 @@ class _LoginFormState extends State<LoginForm> {
               ),
               child: authProvider.isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
-                  : Text(local.loginButton),
+                  : Text(local.registerButton), // “Registrarme”
             ),
           ),
-          const SizedBox(height: 20),
+
+          const SizedBox(height: 16),
+
+          // 🔹 Mensaje de error si falla
           if (authProvider.errorMessage != null)
             Text(
               authProvider.errorMessage!,

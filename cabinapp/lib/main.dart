@@ -41,11 +41,45 @@ class MyApp extends StatelessWidget {
             title: 'CabinApp',
             theme: ThemeData.light(useMaterial3: true).copyWith(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              inputDecorationTheme: InputDecorationTheme(
+                filled: true,
+                fillColor: Colors.grey[100],
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: Colors.deepPurple.shade400,
+                    width: 2,
+                  ),
+                ),
+                labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+              ),
             ),
             darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: Colors.deepPurple,
                 brightness: Brightness.dark,
+              ),
+              inputDecorationTheme: InputDecorationTheme(
+                filled: true,
+                fillColor: Colors.grey[900],
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: Colors.deepPurple.shade200,
+                    width: 2,
+                  ),
+                ),
+                labelStyle: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
             themeMode: themeProvider.themeMode,

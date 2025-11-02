@@ -5,8 +5,9 @@ import 'package:lottie/lottie.dart';
 
 class SplashLogo extends StatelessWidget {
   final double size;
+  final Color color; 
 
-  const SplashLogo({super.key, this.size = 150});
+  const SplashLogo({super.key, this.size = 150, this.color = Colors.white,});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class SplashLogo extends StatelessWidget {
             ScaleEffect(begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
           ],
           child: Lottie.asset(
-            'assets/lotties/cabin.json', // 👈 asegúrate de que la carpeta sea "lottie", no "lotties"
+            'assets/lotties/cabin.json',
             width: size,
             height: size,
             fit: BoxFit.contain,
@@ -29,27 +30,27 @@ class SplashLogo extends StatelessWidget {
 
         const SizedBox(height: 20),
 
-        // Texto opcional de la marca o app
+        // Texto animado de la marca
         Animate(
           effects: [
             SlideEffect(
-              begin: const Offset(0, -4), // 👈 empieza arriba de la pantalla
-              end: const Offset(0, 0),     // termina en su posición normal
+              begin: const Offset(0, -4),
+              end: const Offset(0, 0),
               duration: 3700.ms,
-              curve: Curves.elasticOut,    // 🎯 efecto de rebote
-              delay: 2800.ms,               // espera un poco para sincronizar con el logo
+              curve: Curves.elasticOut,
+              delay: 2800.ms,
             ),
-            FadeEffect(duration: 1000.ms), // aparece suavemente
+            FadeEffect(duration: 1000.ms),
           ],
           child: Text(
             'Cabañas app',
             style: GoogleFonts.frederickaTheGreat(
-              color: Colors.white,
+              color: color, // 👈 usa el color dinámico
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
-        )
+        ),
       ],
     );
   }

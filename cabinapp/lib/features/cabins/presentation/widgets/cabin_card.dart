@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart'; // 👈 Import necesario
 
 class CabinCard extends StatelessWidget {
   final int index;
@@ -16,7 +17,7 @@ class CabinCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
+    final card = Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: theme.colorScheme.surface,
@@ -53,5 +54,12 @@ class CabinCard extends StatelessWidget {
         ),
       ),
     );
+
+    // 👇 Animación idéntica a la usada en CustomerCard
+    return card
+        .animate()
+        .fadeIn(duration: 400.ms, delay: (index * 100).ms)
+        .scale(begin: const Offset(0.9, 0.9))
+        .move(begin: const Offset(0, 20), curve: Curves.easeOut);
   }
 }

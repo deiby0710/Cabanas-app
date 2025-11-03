@@ -451,6 +451,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start your CabinApp experience.'**
   String get startExperience;
+
+  /// No description provided for @noCabinsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have any cabins yet'**
+  String get noCabinsYet;
+
+  /// No description provided for @createCabin.
+  ///
+  /// In en, this message translates to:
+  /// **'Create cabin'**
+  String get createCabin;
+
+  /// No description provided for @cabinNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cabin name'**
+  String get cabinNameLabel;
+
+  /// No description provided for @cabinCapacityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity'**
+  String get cabinCapacityLabel;
+
+  /// No description provided for @cabinCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Cabin created successfully'**
+  String get cabinCreated;
+
+  /// No description provided for @cabinError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while loading cabins'**
+  String get cabinError;
+
+  /// No description provided for @addCabin.
+  ///
+  /// In en, this message translates to:
+  /// **'Add cabin'**
+  String get addCabin;
+
+  /// No description provided for @enterCabinName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid cabin name'**
+  String get enterCabinName;
+
+  /// No description provided for @enterCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the cabin capacity'**
+  String get enterCapacity;
+
+  /// No description provided for @invalidCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid capacity'**
+  String get invalidCapacity;
+
+  /// No description provided for @createCabinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new cabin'**
+  String get createCabinTitle;
+
+  /// No description provided for @creatingCabin.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating...'**
+  String get creatingCabin;
 }
 
 class _AppLocalizationsDelegate

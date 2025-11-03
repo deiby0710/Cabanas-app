@@ -58,5 +58,17 @@
   "welcomeBack": "¡Bienvenido de nuevo!",
   "signInToContinue": "Inicia sesión para continuar.",
   "createAccount": "Crea tu cuenta",
-  "startExperience": "Comienza tu experiencia en CabinApp."
+  "startExperience": "Comienza tu experiencia en CabinApp.",
+  "noCabinsYet": "Aún no tienes cabañas registradas",
+  "createCabin": "Crear cabaña",
+  "cabinNameLabel": "Nombre de la cabaña",
+  "cabinCapacityLabel": "Capacidad",
+  "cabinCreated": "Cabaña creada correctamente",
+  "cabinError": "Ocurrió un error al cargar las cabañas",
+  "addCabin": "Agregar cabaña",
+  "enterCabinName": "Ingresa un nombre válido para la cabaña",
+  "enterCapacity": "Ingresa la capacidad de la cabaña",
+  "invalidCapacity": "Ingresa una capacidad válida",
+  "createCabinTitle": "Crear nueva cabaña",
+  "creatingCabin": "Creando..."
 }

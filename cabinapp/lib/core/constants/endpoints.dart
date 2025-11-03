@@ -12,8 +12,10 @@ class ApiConstants {
   static const myOrganizations = '/organization/my';
   static const organizationById = '/organization';
 
-  // ---- Otros módulos ----
+  // ---- Cabins ----
   static const cabins = '/cabins';
+
+  // ---- Otros módulos ----
   static const reservations = '/reservations';
   static const customers = '/customers';
 }

@@ -58,5 +58,17 @@
   "welcomeBack": "Welcome back!",
   "signInToContinue": "Sign in to continue.",
   "createAccount": "Create your account",
-  "startExperience": "Start your CabinApp experience."
+  "startExperience": "Start your CabinApp experience.",
+  "noCabinsYet": "You don't have any cabins yet",
+  "createCabin": "Create cabin",
+  "cabinNameLabel": "Cabin name",
+  "cabinCapacityLabel": "Capacity",
+  "cabinCreated": "Cabin created successfully",
+  "cabinError": "An error occurred while loading cabins",
+  "addCabin": "Add cabin",
+  "enterCabinName": "Enter a valid cabin name",
+  "enterCapacity": "Enter the cabin capacity",
+  "invalidCapacity": "Enter a valid capacity",
+  "createCabinTitle": "Create new cabin",
+  "creatingCabin": "Creating..."
 }

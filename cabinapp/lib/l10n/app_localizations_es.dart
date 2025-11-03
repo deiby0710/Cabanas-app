@@ -185,4 +185,40 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get startExperience => 'Comienza tu experiencia en CabinApp.';
+
+  @override
+  String get noCabinsYet => 'Aún no tienes cabañas registradas';
+
+  @override
+  String get createCabin => 'Crear cabaña';
+
+  @override
+  String get cabinNameLabel => 'Nombre de la cabaña';
+
+  @override
+  String get cabinCapacityLabel => 'Capacidad';
+
+  @override
+  String get cabinCreated => 'Cabaña creada correctamente';
+
+  @override
+  String get cabinError => 'Ocurrió un error al cargar las cabañas';
+
+  @override
+  String get addCabin => 'Agregar cabaña';
+
+  @override
+  String get enterCabinName => 'Ingresa un nombre válido para la cabaña';
+
+  @override
+  String get enterCapacity => 'Ingresa la capacidad de la cabaña';
+
+  @override
+  String get invalidCapacity => 'Ingresa una capacidad válida';
+
+  @override
+  String get createCabinTitle => 'Crear nueva cabaña';
+
+  @override
+  String get creatingCabin => 'Creando...';
 }

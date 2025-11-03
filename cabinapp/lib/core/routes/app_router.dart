@@ -1,3 +1,4 @@
+import 'package:cabinapp/features/cabins/presentation/create_cabin_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cabinapp/features/splash/presentation/splash_page.dart';
 import 'package:cabinapp/features/auth/presentation/auth_page.dart';
@@ -21,10 +22,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/selectOrganization',
       builder: (context, state) => const SelectOrganizationPage(),
-      ),
-      GoRoute(
+    ),
+    GoRoute(
       path: '/home',
       builder: (context, state) => const HomePage(),
-      ),
+    ),
+    GoRoute(
+      path: '/createCabin',
+      builder: (context, state) => const CreateCabinPage(),
+    ),
   ],
 );

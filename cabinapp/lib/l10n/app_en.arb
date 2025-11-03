@@ -70,5 +70,14 @@
   "enterCapacity": "Enter the cabin capacity",
   "invalidCapacity": "Enter a valid capacity",
   "createCabinTitle": "Create new cabin",
-  "creatingCabin": "Creating..."
+  "creatingCabin": "Creating...",
+  "addClient": "Add client",
+  "createClient": "Create client",
+  "createClientTitle": "Register new client",
+  "clientNameLabel": "Client name",
+  "enterClientName": "Enter the client name",
+  "clientPhoneLabel": "Phone number",
+  "enterPhone": "Enter a valid phone number",
+  "customerCreated": "Client created successfully",
+  "noClientsYet": "No clients registered yet"
 }

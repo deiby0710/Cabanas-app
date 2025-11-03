@@ -222,4 +222,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get creatingCabin => 'Creating...';
+
+  @override
+  String get addClient => 'Add client';
+
+  @override
+  String get createClient => 'Create client';
+
+  @override
+  String get createClientTitle => 'Register new client';
+
+  @override
+  String get clientNameLabel => 'Client name';
+
+  @override
+  String get enterClientName => 'Enter the client name';
+
+  @override
+  String get clientPhoneLabel => 'Phone number';
+
+  @override
+  String get enterPhone => 'Enter a valid phone number';
+
+  @override
+  String get customerCreated => 'Client created successfully';
+
+  @override
+  String get noClientsYet => 'No clients registered yet';
 }

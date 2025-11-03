@@ -221,4 +221,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get creatingCabin => 'Creando...';
+
+  @override
+  String get addClient => 'Agregar cliente';
+
+  @override
+  String get createClient => 'Crear cliente';
+
+  @override
+  String get createClientTitle => 'Registrar nuevo cliente';
+
+  @override
+  String get clientNameLabel => 'Nombre del cliente';
+
+  @override
+  String get enterClientName => 'Ingresa el nombre del cliente';
+
+  @override
+  String get clientPhoneLabel => 'Número de celular';
+
+  @override
+  String get enterPhone => 'Ingresa un número de celular válido';
+
+  @override
+  String get customerCreated => 'Cliente creado correctamente';
+
+  @override
+  String get noClientsYet => 'Aún no hay clientes registrados';
 }

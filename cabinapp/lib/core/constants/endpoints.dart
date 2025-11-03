@@ -15,7 +15,9 @@ class ApiConstants {
   // ---- Cabins ----
   static const cabins = '/cabins';
 
+  // ---- Customer ----
+  static const String customers = '/customers';
+
   // ---- Otros módulos ----
   static const reservations = '/reservations';
-  static const customers = '/customers';
 }

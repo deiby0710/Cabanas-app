@@ -18,7 +18,6 @@ class CabinsRepository {
   Future<List<CabinModel>> getCabins() async {
     try {
       final orgId = await _secureStorage.readOrganizationId(); // ✅
-      print('📦 Org ID leído del storage: $orgId');
       if (orgId == null) throw Exception('No hay organización activa.');
 
       final response = await _dio.get('${ApiConstants.cabins}/$orgId');

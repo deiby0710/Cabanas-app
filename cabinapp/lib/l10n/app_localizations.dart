@@ -523,6 +523,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Creating...'**
   String get creatingCabin;
+
+  /// No description provided for @addClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Add client'**
+  String get addClient;
+
+  /// No description provided for @createClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Create client'**
+  String get createClient;
+
+  /// No description provided for @createClientTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Register new client'**
+  String get createClientTitle;
+
+  /// No description provided for @clientNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Client name'**
+  String get clientNameLabel;
+
+  /// No description provided for @enterClientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the client name'**
+  String get enterClientName;
+
+  /// No description provided for @clientPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get clientPhoneLabel;
+
+  /// No description provided for @enterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number'**
+  String get enterPhone;
+
+  /// No description provided for @customerCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Client created successfully'**
+  String get customerCreated;
+
+  /// No description provided for @noClientsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No clients registered yet'**
+  String get noClientsYet;
 }
 
 class _AppLocalizationsDelegate

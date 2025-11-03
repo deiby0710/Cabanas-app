@@ -70,5 +70,14 @@
   "enterCapacity": "Ingresa la capacidad de la cabaña",
   "invalidCapacity": "Ingresa una capacidad válida",
   "createCabinTitle": "Crear nueva cabaña",
-  "creatingCabin": "Creando..."
+  "creatingCabin": "Creando...",
+  "addClient": "Agregar cliente",
+  "createClient": "Crear cliente",
+  "createClientTitle": "Registrar nuevo cliente",
+  "clientNameLabel": "Nombre del cliente",
+  "enterClientName": "Ingresa el nombre del cliente",
+  "clientPhoneLabel": "Número de celular",
+  "enterPhone": "Ingresa un número de celular válido",
+  "customerCreated": "Cliente creado correctamente",
+  "noClientsYet": "Aún no hay clientes registrados"
 }

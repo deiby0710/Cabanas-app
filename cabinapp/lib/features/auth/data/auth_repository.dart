@@ -38,6 +38,7 @@ class AuthRepository {
       return UserModel(
         id: userJson['id'].toString(),
         email: userJson['email'] ?? '',
+        nombre: userJson['nombre'] ?? '',
         role: (data['organizations'] != null && data['organizations'].isNotEmpty)
             ? data['organizations'][0]['rol'] ?? 'USER'
             : 'USER',
@@ -83,6 +84,7 @@ class AuthRepository {
 
       return UserModel(
         id: userJson['id'].toString(),
+        nombre: userJson['nombre'] ?? '',
         email: userJson['email'] ?? '',
       );
     } on DioException catch (e) {
@@ -106,6 +108,7 @@ class AuthRepository {
       return UserModel(
         id: userJson['id'].toString(),
         email: userJson['email'] ?? '',
+        nombre: userJson['nombre'] ?? '',
         role: (orgs != null && orgs.isNotEmpty)
             ? orgs[0]['rol'] ?? 'USER'
             : 'USER',

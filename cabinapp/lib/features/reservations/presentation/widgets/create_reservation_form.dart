@@ -162,16 +162,84 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
           ),
           const Divider(),
 
-          // 🔹 Abono
+          // 🔹 Campo de abono
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Abono'),
+            decoration: InputDecoration(
+              labelText: 'Abono',
+              labelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.08),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              prefixIcon: Icon(
+                Icons.attach_money_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
             keyboardType: TextInputType.number,
             onSaved: (v) => abono = double.tryParse(v ?? '0'),
           ),
 
-          // 🔹 Número de personas
+          const SizedBox(height: 16),
+
+          // 🔹 Campo de número de personas
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Número de personas'),
+            decoration: InputDecoration(
+              labelText: 'Número de personas',
+              labelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.08),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              prefixIcon: Icon(
+                Icons.group_rounded,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
             keyboardType: TextInputType.number,
             onSaved: (v) => numPersonas = int.tryParse(v ?? '1'),
           ),

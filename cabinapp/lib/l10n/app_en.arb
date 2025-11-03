@@ -79,5 +79,9 @@
   "clientPhoneLabel": "Phone number",
   "enterPhone": "Enter a valid phone number",
   "customerCreated": "Client created successfully",
-  "noClientsYet": "No clients registered yet"
+  "noClientsYet": "No clients registered yet",
+  "available": "Available",
+  "reserved": "Reserved",
+  "noReservationsForThisDay": "No reservations for this day",
+  "addReservation": "Add reservation"
 }

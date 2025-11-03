@@ -249,4 +249,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noClientsYet => 'No clients registered yet';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get reserved => 'Reserved';
+
+  @override
+  String get noReservationsForThisDay => 'No reservations for this day';
+
+  @override
+  String get addReservation => 'Add reservation';
 }

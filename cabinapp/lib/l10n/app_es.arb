@@ -79,5 +79,9 @@
   "clientPhoneLabel": "Número de celular",
   "enterPhone": "Ingresa un número de celular válido",
   "customerCreated": "Cliente creado correctamente",
-  "noClientsYet": "Aún no hay clientes registrados"
+  "noClientsYet": "Aún no hay clientes registrados",
+  "available": "Disponible",
+  "reserved": "Reservada",
+  "noReservationsForThisDay": "No hay reservas para este día",
+  "addReservation": "Añadir reserva"
 }

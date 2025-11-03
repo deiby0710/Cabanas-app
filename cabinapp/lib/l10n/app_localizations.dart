@@ -577,6 +577,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No clients registered yet'**
   String get noClientsYet;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @reserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved'**
+  String get reserved;
+
+  /// No description provided for @noReservationsForThisDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No reservations for this day'**
+  String get noReservationsForThisDay;
+
+  /// No description provided for @addReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add reservation'**
+  String get addReservation;
 }
 
 class _AppLocalizationsDelegate

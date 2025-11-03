@@ -53,8 +53,6 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Form(
       key: _formKey,
       child: Column(

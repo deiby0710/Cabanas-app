@@ -83,5 +83,6 @@
   "available": "Available",
   "reserved": "Reserved",
   "noReservationsForThisDay": "No reservations for this day",
-  "addReservation": "Add reservation"
+  "addReservation": "Add reservation",
+  "newReservationTitle": "New reservation"
 }

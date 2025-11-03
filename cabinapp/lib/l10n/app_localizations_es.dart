@@ -260,4 +260,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get addReservation => 'Añadir reserva';
+
+  @override
+  String get newReservationTitle => 'Nueva reserva';
 }

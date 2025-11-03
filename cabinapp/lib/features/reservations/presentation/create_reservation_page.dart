@@ -1,22 +1,37 @@
-import 'package:cabinapp/features/reservations/presentation/widgets/create_reservation_form.dart';
 import 'package:flutter/material.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
+import 'package:cabinapp/features/reservations/presentation/widgets/create_reservation_form.dart';
 
 class CreateReservationPage extends StatelessWidget {
-  const CreateReservationPage({super.key});
+  final DateTime startDate;
+
+  const CreateReservationPage({super.key, required this.startDate});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final local = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nueva reserva'),
+        title: Text(local.newReservationTitle), // 🌍 “Nueva reserva”
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: CreateReservationForm(),
+      backgroundColor: theme.colorScheme.surface,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Card(
+          elevation: 3,
+          color: theme.colorScheme.surfaceVariant,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: CreateReservationForm(startDate: startDate),
+          ),
+        ),
       ),
     );
   }

@@ -39,7 +39,10 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/reservations/create',
-      builder: (context, state) => const CreateReservationPage(),
+        builder: (context, state) {
+        final startDate = state.extra as DateTime?;
+        return CreateReservationPage(startDate: startDate ?? DateTime.now());
+      }
     ),
   ],
 );

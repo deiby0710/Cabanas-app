@@ -601,6 +601,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add reservation'**
   String get addReservation;
+
+  /// No description provided for @newReservationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New reservation'**
+  String get newReservationTitle;
 }
 
 class _AppLocalizationsDelegate

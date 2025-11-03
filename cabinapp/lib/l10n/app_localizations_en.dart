@@ -261,4 +261,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addReservation => 'Add reservation';
+
+  @override
+  String get newReservationTitle => 'New reservation';
 }

@@ -150,7 +150,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/reservations/create'),
+        onPressed: () => context.push('/reservations/create', extra: _selectedDay,),
         backgroundColor: theme.colorScheme.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),

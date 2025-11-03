@@ -83,5 +83,6 @@
   "available": "Disponible",
   "reserved": "Reservada",
   "noReservationsForThisDay": "No hay reservas para este día",
-  "addReservation": "Añadir reserva"
+  "addReservation": "Añadir reserva",
+  "newReservationTitle": "Nueva reserva"
 }

@@ -4,6 +4,8 @@ import 'package:cabinapp/features/customers/data/customers_repository.dart';
 import 'package:cabinapp/features/customers/presentation/provider/customers_provider.dart';
 import 'package:cabinapp/features/organization/data/organization_repository.dart';
 import 'package:cabinapp/features/organization/presentation/providers/organization_provider.dart';
+import 'package:cabinapp/features/reservations/data/reservations_repository.dart';
+import 'package:cabinapp/features/reservations/presentation/provider/reservation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/core/routes/app_router.dart';
@@ -42,6 +44,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => CustomersProvider(CustomersRepository()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ReservationsProvider(ReservationsRepository()),
         ),
       ],
       child: Consumer<ThemeProvider>(

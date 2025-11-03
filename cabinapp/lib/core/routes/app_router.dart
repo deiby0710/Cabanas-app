@@ -1,5 +1,6 @@
 import 'package:cabinapp/features/cabins/presentation/create_cabin_page.dart';
 import 'package:cabinapp/features/customers/presentation/create_customer_page.dart';
+import 'package:cabinapp/features/reservations/presentation/create_reservation_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cabinapp/features/splash/presentation/splash_page.dart';
 import 'package:cabinapp/features/auth/presentation/auth_page.dart';
@@ -35,6 +36,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/customers/create',
       builder: (context, state) => const CreateCustomerPage(),
+    ),
+    GoRoute(
+      path: '/reservations/create',
+      builder: (context, state) => const CreateReservationPage(),
     ),
   ],
 );

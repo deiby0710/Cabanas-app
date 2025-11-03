@@ -111,6 +111,20 @@ class OrganizationRepository {
     }
   }
 
+  // 🔹 Eliminar organización
+  Future<void> deleteOrganization(String orgId) async {
+    try {
+      await _dio.delete('${ApiConstants.organizationById}/$orgId');
+      await _secureStorage.deleteOrganizationId();
+    } on DioException catch (e) {
+      final message =
+          e.response?.data?['message'] ?? 'Error al eliminar la organización';
+      throw Exception(message);
+    } catch (_) {
+      throw Exception('Error inesperado al eliminar la organización');
+    }
+  }
+
   // 🔹 Leer y guardar ID de organización activa
   Future<String?> getActiveOrganizationId() async {
     return await _secureStorage.readOrganizationId();

@@ -64,13 +64,10 @@ export async function joinOrganizationService({ codigoInvitacion, adminId}) {
 }
 
 export async function listOrganizationsByAdmin({ adminId }){
-    console.log("El adminId es: ", adminId)
     const relaciones = await prisma.administradorOrganizacion.findMany({
         where: { adminId },
         include: { organizacion: true},
     });
-
-    console.log("Resultado de: ", relaciones);
 
     const organizations = relaciones.map(r => ({
         id: r.organizacion.id,

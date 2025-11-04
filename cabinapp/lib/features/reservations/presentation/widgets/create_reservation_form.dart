@@ -59,6 +59,47 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
     setState(() => isLoading = true);
 
     try {
+      // 🔹 1. Validar disponibilidad desde backend
+      final existingReservations = await _repo.getReservationsByCabin(
+        cabanaId: selectedCabin!.id,
+        desde: widget.startDate,
+        hasta: fechaFin!,
+      );
+
+      bool sameDay(DateTime a, DateTime b) =>
+        a.year == b.year && a.month == b.month && a.day == b.day;
+
+      final hasOverlap = existingReservations.any((r) {
+        // ✅ Permitir fronteras en el mismo DÍA calendario:
+        if (sameDay(widget.startDate, r.fechaFin)) return false;   // empieza justo cuando termina otra
+        if (sameDay(fechaFin!, r.fechaInicio)) return false;       // termina justo cuando empieza otra
+
+        // 📐 Regla general de solape real (intervalos [inicio, fin)):
+        final newStart = widget.startDate;
+        final newEnd   = fechaFin!;
+        final oldStart = r.fechaInicio;
+        final oldEnd   = r.fechaFin;
+
+        // No solapan si newEnd <= oldStart  ||  newStart >= oldEnd
+        final nonOverlap = newEnd.isBefore(oldStart) ||
+                          newEnd.isAtSameMomentAs(oldStart) ||
+                          newStart.isAfter(oldEnd) ||
+                          newStart.isAtSameMomentAs(oldEnd);
+
+        return !nonOverlap;
+      });
+
+      if (hasOverlap) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ La cabaña ya está reservada en esas fechas'),
+          ),
+        );
+        setState(() => isLoading = false);
+        return;
+      }
+
+      // 🔹 2. Crear la reserva normalmente
       await _repo.createReservation(
         cabanaId: selectedCabin!.id,
         clienteId: selectedClient!.id,

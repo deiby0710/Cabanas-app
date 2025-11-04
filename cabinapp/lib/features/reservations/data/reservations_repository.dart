@@ -140,4 +140,36 @@ class ReservationsRepository {
       throw Exception('Error inesperado al eliminar la reserva');
     }
   }
+
+  // 🔹 Consultamos las reservas de una cabaña
+  Future<List<ReservationModel>> getReservationsByCabin({
+    required int cabanaId,
+    DateTime? desde,
+    DateTime? hasta,
+  }) async {
+    try {
+      final orgId = await _secureStorage.readOrganizationId();
+      if (orgId == null) throw Exception('No hay organización activa.');
+
+      final queryParams = {
+        'cabanaId': cabanaId.toString(),
+        if (desde != null) 'desde': desde.toIso8601String(),
+        if (hasta != null) 'hasta': hasta.toIso8601String(),
+      };
+
+      final response = await _dio.get(
+        '${ApiConstants.reservations}/$orgId',
+        queryParameters: queryParams,
+      );
+
+      final data = response.data['reservations'] as List<dynamic>;
+      return data.map((r) => ReservationModel.fromJson(r)).toList();
+    } on DioException catch (e) {
+      final message = e.response?.data?['message'] ??
+          'Error al obtener reservas de la cabaña';
+      throw Exception(message);
+    } catch (_) {
+      throw Exception('Error inesperado al obtener reservas de la cabaña');
+    }
+  }
 }

@@ -84,25 +84,17 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
 
   // 🔹 Selectores modales (mock por ahora)
   Future<void> _selectCabin() async {
-    final cabinsList = [
-      CabinItem(id: 1, name: 'Cabaña El Refugio', capacity: 5),
-      CabinItem(id: 2, name: 'Vista al Lago', capacity: 8),
-    ];
     final selected = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => SelectCabinModal(cabins: cabinsList)),
+      MaterialPageRoute(builder: (_) => SelectCabinModal()),
     );
     if (selected != null) setState(() => selectedCabin = selected);
   }
 
   Future<void> _selectClient() async {
-    final clientsList = [
-      ClientItem(id: 1, name: 'Juan Pérez', phone: '3012345678'),
-      ClientItem(id: 2, name: 'María Gómez', phone: '3209876543'),
-    ];
     final selected = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => SelectClientModal(clients: clientsList)),
+      MaterialPageRoute(builder: (_) => SelectClientModal()),
     );
     if (selected != null) setState(() => selectedClient = selected);
   }

@@ -7,18 +7,45 @@ class ReservationsStatusRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final local = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        _StatusIndicator(
-          color: Colors.green,
-          label: local.available, 
+        // 🔹 Primera fila
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _StatusIndicator(
+              color: Colors.amber,
+              label: local.statusPending, // Separada
+              theme: theme,
+            ),
+            const SizedBox(width: 24),
+            _StatusIndicator(
+              color: Colors.green,
+              label: local.statusConfirmed, // Reservada
+              theme: theme,
+            ),
+          ],
         ),
-        const SizedBox(width: 20),
-        _StatusIndicator(
-          color: Colors.red,
-          label: local.reserved, 
+        const SizedBox(height: 8),
+        // 🔹 Segunda fila
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _StatusIndicator(
+              color: Colors.red,
+              label: local.statusCanceled, // Cancelada
+              theme: theme,
+            ),
+            const SizedBox(width: 24),
+            _StatusIndicator(
+              color: Colors.blueAccent,
+              label: local.statusCompleted, // Completada
+              theme: theme,
+            ),
+          ],
         ),
       ],
     );
@@ -28,10 +55,12 @@ class ReservationsStatusRow extends StatelessWidget {
 class _StatusIndicator extends StatelessWidget {
   final Color color;
   final String label;
+  final ThemeData theme;
 
   const _StatusIndicator({
     required this.color,
     required this.label,
+    required this.theme,
   });
 
   @override
@@ -47,7 +76,13 @@ class _StatusIndicator extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 6),
-        Text(label),
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ],
     );
   }

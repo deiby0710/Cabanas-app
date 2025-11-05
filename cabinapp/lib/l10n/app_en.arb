@@ -84,5 +84,9 @@
   "reserved": "Reserved",
   "noReservationsForThisDay": "No reservations for this day",
   "addReservation": "Add reservation",
-  "newReservationTitle": "New reservation"
+  "newReservationTitle": "New reservation",
+  "statusPending": "Pending",
+  "statusConfirmed": "Confirmed",
+  "statusCanceled": "Canceled",
+  "statusCompleted": "Completed"
 }

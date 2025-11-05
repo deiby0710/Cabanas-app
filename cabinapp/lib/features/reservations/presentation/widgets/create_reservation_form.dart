@@ -125,7 +125,6 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
     }
   }
 
-  // 🔹 Selectores modales (mock por ahora)
   Future<void> _selectCabin() async {
     final selected = await Navigator.push(
       context,

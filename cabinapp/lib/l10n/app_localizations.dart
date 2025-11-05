@@ -607,6 +607,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New reservation'**
   String get newReservationTitle;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get statusConfirmed;
+
+  /// No description provided for @statusCanceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Canceled'**
+  String get statusCanceled;
+
+  /// No description provided for @statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
 }
 
 class _AppLocalizationsDelegate

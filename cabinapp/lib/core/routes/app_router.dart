@@ -1,6 +1,8 @@
 import 'package:cabinapp/features/cabins/presentation/create_cabin_page.dart';
 import 'package:cabinapp/features/customers/presentation/create_customer_page.dart';
+import 'package:cabinapp/features/reservations/domain/reservation_model.dart';
 import 'package:cabinapp/features/reservations/presentation/create_reservation_page.dart';
+import 'package:cabinapp/features/reservations/presentation/widgets/edit_reservation_modal.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cabinapp/features/splash/presentation/splash_page.dart';
 import 'package:cabinapp/features/auth/presentation/auth_page.dart';
@@ -43,6 +45,14 @@ final GoRouter appRouter = GoRouter(
         final startDate = state.extra as DateTime?;
         return CreateReservationPage(startDate: startDate ?? DateTime.now());
       }
+    ),
+    GoRoute(
+      path: '/reservations/edit',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final reservation = extra?['reservation'] as ReservationModel;
+        return EditReservationModal(reservation: reservation);
+      },
     ),
   ],
 );

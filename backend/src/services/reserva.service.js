@@ -70,7 +70,7 @@ export async function listReservationsService(adminId, orgId, filters = {}) {
         where,
             orderBy: { fechaInicio: 'desc' },
         include: {
-            cabana: { select: { id: true, nombre: true } },
+            cabana: { select: { id: true, nombre: true, capacidad: true} },
             cliente: { select: { id: true, nombre: true, celular: true } },
             adminOrg: {
                 select: {

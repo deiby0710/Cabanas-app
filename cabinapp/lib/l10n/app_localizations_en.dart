@@ -264,4 +264,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newReservationTitle => 'New reservation';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusConfirmed => 'Confirmed';
+
+  @override
+  String get statusCanceled => 'Canceled';
+
+  @override
+  String get statusCompleted => 'Completed';
 }

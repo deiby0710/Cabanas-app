@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cabinapp/features/reservations/domain/reservation_model.dart';
 
 class ReservationsCalendar extends StatelessWidget {
   final DateTime focusedDay;
@@ -14,6 +15,21 @@ class ReservationsCalendar extends StatelessWidget {
     required this.onDaySelected,
     required this.eventLoader,
   });
+
+  Color _estadoColor(String estado) {
+    switch (estado.toUpperCase()) {
+      case 'PENDIENTE':
+        return Colors.amber;
+      case 'CONFIRMADA':
+        return Colors.green;
+      case 'CANCELADA':
+        return Colors.red;
+      case 'COMPLETADA':
+        return Colors.blueAccent;
+      default:
+        return Colors.grey;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +59,47 @@ class ReservationsCalendar extends StatelessWidget {
           color: theme.colorScheme.primary,
           shape: BoxShape.circle,
         ),
-        markerDecoration: const BoxDecoration(
-          color: Colors.green,
-          shape: BoxShape.circle,
-        ),
+        markersMaxCount: 3,
+        markerSize: 6,
+        markerDecoration: const BoxDecoration(shape: BoxShape.circle),
+      ),
+
+      // 👇 Aquí lo correcto
+      calendarBuilders: CalendarBuilders(
+        markerBuilder: (context, date, events) {
+          if (events.isEmpty) return const SizedBox.shrink();
+
+          final estados = events
+              .whereType<ReservationModel>()
+              .map((r) => r.estado.toUpperCase())
+              .toSet();
+
+          // 🔹 Varios estados en el mismo día → puntos multicolor
+          if (estados.length > 1) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: estados.take(3).map((estado) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: _estadoColor(estado),
+                    shape: BoxShape.circle,
+                  ),
+                );
+              }).toList(),
+            );
+          }
+
+          // 🔹 Solo un estado en el día
+          final color = _estadoColor(estados.first);
+          return Container(
+            width: 7,
+            height: 7,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          );
+        },
       ),
     );
   }

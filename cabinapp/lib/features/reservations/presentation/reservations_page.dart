@@ -1,3 +1,4 @@
+import 'package:cabinapp/features/reservations/presentation/widgets/reservations_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
@@ -52,51 +53,23 @@ class _ReservationsPageState extends State<ReservationsPage> {
       body: Column(
         children: [
           // 🔹 Calendario
-          TableCalendar(
+          ReservationsCalendar(
             focusedDay: _focusedDay,
-            firstDay: DateTime.utc(2024, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+            selectedDay: _selectedDay,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
               });
             },
-            // 🔹 Generamos los eventos (reservas) por día
             eventLoader: (day) {
               return provider.reservations.where((r) {
                 final start = DateTime(r.fechaInicio.year, r.fechaInicio.month, r.fechaInicio.day);
                 final end = DateTime(r.fechaFin.year, r.fechaFin.month, r.fechaFin.day);
                 final selected = DateTime(day.year, day.month, day.day);
-
-                // 🔹 Ocupada desde fechaInicio hasta el día ANTERIOR a fechaFin
                 return !selected.isBefore(start) && selected.isBefore(end);
               }).toList();
             },
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: theme.colorScheme.primary.withOpacity(0.3),
-                shape: BoxShape.circle,
-              ),
-              selectedDecoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                shape: BoxShape.circle,
-              ),
-              markerDecoration: const BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
-              ),
-              markersMaxCount: 3, // ✅ Muestra hasta 3 puntos debajo del día
-            ),
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-              titleTextStyle: theme.textTheme.titleMedium!.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
 
           const SizedBox(height: 8),
@@ -141,6 +114,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
                       capacity: reservation.cabanaCapacidad ?? 0,
                       status: reservation.estado,
                       index: index,
+                      reservationModel: reservation,
                     );
                   },
                 );

@@ -5,7 +5,6 @@ import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:cabinapp/features/reservations/presentation/provider/reservation_provider.dart';
 import 'package:cabinapp/features/reservations/presentation/widgets/reservation_card.dart';
 import 'package:cabinapp/features/reservations/presentation/widgets/reservations_status_row.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:go_router/go_router.dart';
 
 class ReservationsPage extends StatefulWidget {

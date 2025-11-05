@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:cabinapp/features/reservations/data/reservations_repository.dart';
 import 'package:cabinapp/features/reservations/presentation/widgets/select_cabin_modal.dart';
 import 'package:cabinapp/features/reservations/presentation/widgets/select_client_modal.dart';
+import 'package:go_router/go_router.dart';
+
 
 class CreateReservationForm extends StatefulWidget {
   final DateTime startDate;
@@ -113,7 +115,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
         const SnackBar(content: Text('Reserva creada correctamente 🎉')),
       );
 
-      if (mounted) Navigator.pop(context);
+      if (mounted) context.pop(true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('❌ Error: $e')),

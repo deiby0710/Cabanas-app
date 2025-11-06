@@ -5,7 +5,8 @@ const prisma = new PrismaClient();
 
 export async function createCabinService(adminId, orgId, nombre, capacidad) {
     const adminOrg = await findAdminOrganizationRelation(adminId, orgId)
-    if (!adminOrg || adminOrg.rol !== 'ADMIN') {
+    // if (!adminOrg || adminOrg.rol !== 'ADMIN') {
+    if (!adminOrg) {
         return null; // ❌ No tiene permisos
     }
     return await prisma.cabana.create({ 
@@ -59,7 +60,8 @@ export async function updateCabinService(adminId, orgId, cabanaId, data) {
   const relation = await findAdminOrganizationRelation(adminId, orgId);
 
   // Solo los administradores pueden editar
-  if (!relation || relation.rol !== 'ADMIN') {
+//   if (!relation || relation.rol !== 'ADMIN') {
+  if (!relation) {
     return null;
   }
 
@@ -94,7 +96,8 @@ export async function updateCabinService(adminId, orgId, cabanaId, data) {
 export async function deleteCabinService(adminId, orgId, cabanaId) {
     // Verificar que el admin pertenece a la organización
     const relation = await findAdminOrganizationRelation(adminId, orgId);
-    if (!relation || relation.rol !== 'ADMIN') {
+    // if (!relation || relation.rol !== 'ADMIN') {
+    if (!relation) {
         return null; // ❌ No tiene permisos
     }
 

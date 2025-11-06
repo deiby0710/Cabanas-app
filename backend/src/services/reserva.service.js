@@ -151,7 +151,8 @@ async function hasDateOverlap(orgId, cabanaId, reservaIdToExclude, fechaInicio, 
 export async function updateReservationService(adminId, orgId, reservaId, data) {
     // Permisos
     const relation = await findAdminOrganizationRelation(adminId, orgId);
-    if (!relation || relation.rol !== 'ADMIN') return 'NO_PERMISSION';
+    // if (!relation || relation.rol !== 'ADMIN') return 'NO_PERMISSION';
+    if (!relation) return 'NO_PERMISSION';
 
     // Traer la reserva dentro de la org
     const current = await prisma.reserva.findFirst({
@@ -215,7 +216,8 @@ export async function updateReservationService(adminId, orgId, reservaId, data) 
 export async function deleteReservationService(adminId, orgId, reservaId) {
     // Verificar que el usuario pertenece a la organización y tiene rol ADMIN
     const relation = await findAdminOrganizationRelation(adminId, orgId);
-    if (!relation || relation.rol !== 'ADMIN') return 'NO_PERMISSION';
+    // if (!relation || relation.rol !== 'ADMIN') return 'NO_PERMISSION';
+    if (!relation) return 'NO_PERMISSION';
 
     // Verificar que la reserva pertenece a la organización
     const reserva = await prisma.reserva.findFirst({

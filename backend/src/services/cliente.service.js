@@ -99,7 +99,8 @@ export async function updateCustomerService(adminId, orgId, clienteId, data) {
 export async function deleteCustomerService(adminId, orgId, clienteId) {
     // Validar si pertenece y tiene rol ADMIN
     const relation = await findAdminOrganizationRelation(adminId, orgId);
-    if (!relation || relation.rol !== 'ADMIN') return null;
+    // if (!relation || relation.rol !== 'ADMIN') return null;
+    if (!relation) return null;
 
     // Verificar si el cliente existe dentro de la organización
     const customer = await prisma.cliente.findUnique({

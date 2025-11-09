@@ -100,7 +100,7 @@ class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
                 icon: const Icon(Icons.logout),
                 label: Text(local.removeOrganization),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.error,
+                  backgroundColor: theme.colorScheme.errorContainer,
                   foregroundColor: Colors.white,
                 ),
               ),

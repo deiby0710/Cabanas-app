@@ -19,12 +19,17 @@ class _ReservationsPageState extends State<ReservationsPage> {
   DateTime _selectedDay = DateTime.now();
 
   @override
+  // Este metodo solo se ejecuta una vez cuando se crea el state del widget (antes del primer build)
   void initState() {
     super.initState();
+    // Crea una tarea asincronica 
     Future.microtask(() {
+      // Obtenemos una instancia de ReservationsProvider y llama a su metodo fetchReservations
       context.read<ReservationsProvider>().fetchReservations();
     });
   }
+  // Resumen -> Cuando la pagina se crea, se programa una tarea inmediata para pedir al reservation 
+  // provider que cargue las reservas desde el back end una sola vez al inicio
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +39,36 @@ class _ReservationsPageState extends State<ReservationsPage> {
 
     // 🔹 Filtramos las reservas según el día seleccionado
     final filteredReservations = provider.reservations.where((r) {
-      final start = DateTime(r.fechaInicio.year, r.fechaInicio.month, r.fechaInicio.day);
-      final end = DateTime(r.fechaFin.year, r.fechaFin.month, r.fechaFin.day);
-      final selected = DateTime(_selectedDay.year, _selectedDay.month, _selectedDay.day);
+    // 🔹 Normalizamos todas las fechas a la zona local
+    final start = DateTime(
+      r.fechaInicio.toLocal().year,
+      r.fechaInicio.toLocal().month,
+      r.fechaInicio.toLocal().day,
+    );
 
-      // ✅ Ocupada desde fechaInicio hasta el día ANTERIOR a fechaFin
-      return !selected.isBefore(start) && selected.isBefore(end);
-    }).toList();
+    final end = DateTime(
+      r.fechaFin.toLocal().year,
+      r.fechaFin.toLocal().month,
+      r.fechaFin.toLocal().day,
+    );
 
+    final selected = DateTime(
+      _selectedDay.year,
+      _selectedDay.month,
+      _selectedDay.day,
+    );
+
+    // 🔹 Comprobamos si el día seleccionado está dentro del rango
+    final coincide = !selected.isBefore(start) && selected.isBefore(end);
+
+    if (coincide) {
+      print('✅ Día $selected coincide con reserva ID ${r.id}');
+    }
+
+    return coincide;
+  }).toList();
+
+  print('🎯 Reservas mostradas en lista para $_selectedDay: ${filteredReservations.length}');
 
     return Scaffold(
       appBar: AppBar(
@@ -62,12 +89,34 @@ class _ReservationsPageState extends State<ReservationsPage> {
               });
             },
             eventLoader: (day) {
-              return provider.reservations.where((r) {
-                final start = DateTime(r.fechaInicio.year, r.fechaInicio.month, r.fechaInicio.day);
-                final end = DateTime(r.fechaFin.year, r.fechaFin.month, r.fechaFin.day);
+              // 🔹 Muestra cuántas reservas hay disponibles en el provider
+              print('📅 Cargando eventos para el día: $day');
+              print('📦 Total de reservas en provider: ${provider.reservations.length}');
+
+              // 🔹 Muestra los IDs y fechas de cada reserva
+              for (final r in provider.reservations) {
+                print('➡️ Reserva ID: ${r.id} | Inicio: ${r.fechaInicio} | Fin: ${r.fechaFin}');
+                print('Local inicio: ${r.fechaInicio.toLocal()}');
+                print('Local fin: ${r.fechaFin.toLocal()}');
+              }
+
+              final reservasDelDia = provider.reservations.where((r) {
+                final start = DateTime(r.fechaInicio.toLocal().year, r.fechaInicio.toLocal().month, r.fechaInicio.toLocal().day);
+                final end   = DateTime(r.fechaFin.toLocal().year, r.fechaFin.toLocal().month, r.fechaFin.toLocal().day);
                 final selected = DateTime(day.year, day.month, day.day);
-                return !selected.isBefore(start) && selected.isBefore(end);
+
+                final coincide = !selected.isBefore(start) && selected.isBefore(end);
+                if (coincide) {
+                  print('✅ Día $selected coincide con reserva ID ${r.id}');
+                }
+
+                return coincide;
               }).toList();
+
+              print('🎯 Reservas encontradas para el día $day: ${reservasDelDia.length}');
+              print('-----------------------------------------');
+
+              return reservasDelDia;
             },
           ),
 

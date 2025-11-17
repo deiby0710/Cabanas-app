@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-// import { findAdminOrganizationRelation } from "../utils/db.js"; Por ahora no
+import { findAdminOrganizationRelation } from "../utils/db.js";
 
 const prisma = new PrismaClient();
 
@@ -146,7 +146,6 @@ export async function deleteOrganizationService({adminId, orgId}){
             },
         },
     });
-    console.log("La respuesta es: ", relacion)
 
     if(!relacion) throw new Error("NO_EXISTE")
 
@@ -294,4 +293,23 @@ export async function removeMemberService(requesterId, orgId, targetAdminId) {
     });
  
     return true;
+}
+
+export async function getOutOrganization(userId, orgId) {
+    const relation = await findAdminOrganizationRelation(userId, orgId);
+    
+    if (!relation) throw new Error('NO_RELACION');
+    
+    if (relation.rol === 'ADMIN') throw new Error('NO_PERMISO');
+
+    await prisma.administradorOrganizacion.delete({
+        where: {
+            adminId_organizacionId: {
+                adminId: userId,
+                organizacionId: orgId,
+            }
+        }
+    })
+
+    return true
 }

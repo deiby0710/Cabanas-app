@@ -7,7 +7,8 @@ import {
     deleteOrganizationService,
     updateMemberRoleService,
     listMembersService,
-    removeMemberService
+    removeMemberService,
+    getOutOrganization
 } from "../services/organization.service.js";
 
 export async function createOrganization(req, res) {
@@ -258,5 +259,29 @@ export async function removeMemberFromOrg(req, res) {
     } catch (error) {
         console.error('Error al eliminar miembro:', error);
         res.status(500).json({ error: 'Error en el servidor.' });
+    }
+}
+
+export async function getOutUser(req, res) {
+    try{
+        const orgId = parseInt(req.params.id);
+        const userId = parseInt(req.params.userId);
+
+        const response = await getOutOrganization(userId, orgId);
+
+        res.status(200).json({
+            message: 'El usuario se ha retirado de la organizacion.',
+            response
+        })
+
+    } catch (error) {
+        if(error.message === 'NO_RELACION'){
+            return res.status(404).json({error: "El admin no esta relacionada con la organizacion."})
+        }
+        if(error.message === 'NO_PERMISO') {
+            return res.status(401).json({error: 'El admin no puede salir de la organizacion.'})
+        }
+        res.status(500).json({ error: 'Error interno del servidor.'})
+        console.error('Error en getOutUser: ', error)
     }
 }

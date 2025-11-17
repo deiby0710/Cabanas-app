@@ -9,7 +9,8 @@ import {
     deleteOrganization,
     updateMemberRole,
     listOrganizationMembers,
-    removeMemberFromOrg
+    removeMemberFromOrg,
+    getOutUser
  } from '../controllers/organization.controller.js';
 
 const router = express.Router();
@@ -22,6 +23,7 @@ router.get('/:id/members', verifyToken, listOrganizationMembers)
 router.put('/:id', verifyToken, updateOrganizationName)
 router.delete('/:id', verifyToken, deleteOrganization)
 router.delete('/:orgId/members/:adminId', verifyToken, removeMemberFromOrg);
+router.delete('/:id/user/:userId', verifyToken, getOutUser)
 router.put('/:id/member/:adminId', verifyToken, updateMemberRole)
 
 export default router;

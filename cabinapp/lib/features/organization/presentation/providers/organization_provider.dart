@@ -65,6 +65,43 @@ class OrganizationProvider extends ChangeNotifier {
     }
   }
 
+  /// Eliminar organización (solo ADMIN)
+  Future<void> deleteOrganization(String orgId) async {
+    _setLoading(true);
+    try {
+      await _organizationRepository.deleteOrganization(orgId);
+
+      // Si fue eliminada, limpiamos la activa
+      _activeOrganization = null;
+      _errorMessage = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  /// Salir de organización (USER)
+  Future<void> leaveOrganization(String orgId, String userId) async {
+    _setLoading(true);
+    try {
+      await _organizationRepository.leaveOrganization(
+        orgId: orgId,
+        userId: userId,
+      );
+
+      // El usuario ya no pertenece a esa org
+      _activeOrganization = null;
+      _errorMessage = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   /// Carga la organización activa guardada en almacenamiento seguro.
   Future<void> loadActiveOrganization() async {
     _setLoading(true);

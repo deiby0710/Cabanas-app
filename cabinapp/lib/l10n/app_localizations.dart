@@ -631,6 +631,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Completed'**
   String get statusCompleted;
+
+  /// No description provided for @deleteOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete organization'**
+  String get deleteOrganization;
+
+  /// No description provided for @leaveOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave organization'**
+  String get leaveOrganization;
+
+  /// No description provided for @organizationDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization deleted successfully'**
+  String get organizationDeleted;
+
+  /// No description provided for @organizationLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'You have left the organization'**
+  String get organizationLeft;
+
+  /// No description provided for @organizationDangerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get organizationDangerConfirm;
+
+  /// No description provided for @organizationDangerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get organizationDangerDescription;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

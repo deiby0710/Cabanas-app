@@ -302,6 +302,29 @@ export async function getOutOrganization(userId, orgId) {
     
     if (relation.rol === 'ADMIN') throw new Error('NO_PERMISO');
 
+    const adminPrincipal = await prisma.administradorOrganizacion.findFirst({
+        where: {
+            organizacionId: orgId,
+            rol: 'ADMIN',        // o tu campo real
+        },
+        orderBy: {
+            fechaUnion: 'asc'      // el primero creado
+        }
+    });
+    if (!adminPrincipal) {
+        throw new Error("No hay administrador principal para reasignar reservas.");
+    }
+
+    await prisma.reserva.updateMany({
+        where: {
+            adminId: userId,
+            organizacionId: orgId
+        },
+        data: {
+            adminId: adminPrincipal.adminId   // o tu campo real
+        }
+    });
+
     await prisma.administradorOrganizacion.delete({
         where: {
             adminId_organizacionId: {

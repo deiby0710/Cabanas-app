@@ -1,4 +1,5 @@
 import 'package:cabinapp/features/organization/presentation/widgets/my_organizations_list.dart';
+import 'package:cabinapp/features/organization/presentation/widgets/organization_danger_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/organization_provider.dart';
@@ -89,21 +90,7 @@ class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
               const SizedBox(height: 16),
 
               // 🔹 Botón para limpiar organización activa
-              ElevatedButton.icon(
-                onPressed: () async {
-                  await context.read<OrganizationProvider>().clearActiveOrganization();
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(local.organizationCleared)),
-                  );
-                },
-                icon: const Icon(Icons.logout),
-                label: Text(local.removeOrganization),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.errorContainer,
-                  foregroundColor: Colors.white,
-                ),
-              ),
+              const OrganizationDangerButton(),
 
               const SizedBox(height: 32),
 

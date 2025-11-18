@@ -88,5 +88,12 @@
   "statusPending": "Separada",
   "statusConfirmed": "Reservada",
   "statusCanceled": "Cancelada",
-  "statusCompleted": "Completada"
+  "statusCompleted": "Completada",
+  "deleteOrganization": "Eliminar organización",
+  "leaveOrganization": "Salir de la organización",
+  "organizationDeleted": "Organización eliminada correctamente",
+  "organizationLeft": "Has salido de la organización",
+  "organizationDangerConfirm": "¿Estás seguro?",
+  "organizationDangerDescription": "Esta acción no se puede deshacer.",
+  "cancel": "Cancelar"
 }

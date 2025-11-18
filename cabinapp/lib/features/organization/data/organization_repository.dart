@@ -57,10 +57,15 @@ class OrganizationRepository {
 
       final data = response.data as Map<String, dynamic>;
 
-      final orgId = data['organization']['id'].toString();
+      final orgJson = data['organizacion'] as Map<String, dynamic>;
+      final orgId = orgJson['id'].toString();
+
       await _secureStorage.saveOrganizationId(orgId);
 
-      return OrganizationModel.fromJson(data['organization']);
+      return OrganizationModel.fromJson({
+        ...orgJson,
+        'rol': data['rol'],
+      });
     } on DioException catch (e) {
       final message = e.response?.data?['message'] ??
           'Error al unirse a la organización';
@@ -110,7 +115,6 @@ class OrganizationRepository {
       throw Exception('Error inesperado al obtener organización');
     }
   }
-
   // 🔹 Eliminar organización
   Future<void> deleteOrganization(String orgId) async {
     try {
@@ -122,6 +126,27 @@ class OrganizationRepository {
       throw Exception(message);
     } catch (_) {
       throw Exception('Error inesperado al eliminar la organización');
+    }
+  }
+  // 🔹 Salir de una organización (miembro)
+  Future<void> leaveOrganization({
+    required String orgId,
+    required String userId,
+  }) async {
+    try {
+      await _dio.delete('${ApiConstants.organizationById}/$orgId/user/$userId');
+
+      // Si el usuario sale de esa organización y es la activa, limpiamos el storage
+      final activeOrgId = await _secureStorage.readOrganizationId();
+      if (activeOrgId == orgId) {
+        await _secureStorage.deleteOrganizationId();
+      }
+    } on DioException catch (e) {
+      final message =
+          e.response?.data?['message'] ?? 'Error al salir de la organización';
+      throw Exception(message);
+    } catch (_) {
+      throw Exception('Error inesperado al salir de la organización');
     }
   }
 

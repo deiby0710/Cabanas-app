@@ -88,5 +88,12 @@
   "statusPending": "Pending",
   "statusConfirmed": "Confirmed",
   "statusCanceled": "Canceled",
-  "statusCompleted": "Completed"
+  "statusCompleted": "Completed",
+  "deleteOrganization": "Delete organization",
+  "leaveOrganization": "Leave organization",
+  "organizationDeleted": "Organization deleted successfully",
+  "organizationLeft": "You have left the organization",
+  "organizationDangerConfirm": "Are you sure?",
+  "organizationDangerDescription": "This action cannot be undone.",
+  "cancel": "Cancel"
 }

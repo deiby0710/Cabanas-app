@@ -276,4 +276,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusCompleted => 'Completed';
+
+  @override
+  String get deleteOrganization => 'Delete organization';
+
+  @override
+  String get leaveOrganization => 'Leave organization';
+
+  @override
+  String get organizationDeleted => 'Organization deleted successfully';
+
+  @override
+  String get organizationLeft => 'You have left the organization';
+
+  @override
+  String get organizationDangerConfirm => 'Are you sure?';
+
+  @override
+  String get organizationDangerDescription => 'This action cannot be undone.';
+
+  @override
+  String get cancel => 'Cancel';
 }

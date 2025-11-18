@@ -275,4 +275,26 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get statusCompleted => 'Completada';
+
+  @override
+  String get deleteOrganization => 'Eliminar organización';
+
+  @override
+  String get leaveOrganization => 'Salir de la organización';
+
+  @override
+  String get organizationDeleted => 'Organización eliminada correctamente';
+
+  @override
+  String get organizationLeft => 'Has salido de la organización';
+
+  @override
+  String get organizationDangerConfirm => '¿Estás seguro?';
+
+  @override
+  String get organizationDangerDescription =>
+      'Esta acción no se puede deshacer.';
+
+  @override
+  String get cancel => 'Cancelar';
 }

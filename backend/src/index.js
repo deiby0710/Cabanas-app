@@ -8,7 +8,7 @@ import cabanasRoutes from './routes/cabanas.routes.js'
 import reservasRoutes from './routes/reservas.routes.js'
 import adminRoutes from './routes/admin.routes.js'
 import organizationRoutes from './routes/organization.routes.js'
-
+import aiRouter from "./routes/ai.routes.js";
 
 // Cargamos las variables de .env
 dotenv.config()
@@ -26,6 +26,7 @@ app.use('/api/admin', adminRoutes)
 app.use('/customers',clientesRoutes)
 app.use('/cabins',cabanasRoutes)
 app.use('/reservations', reservasRoutes)
+app.use('/ai', aiRouter)
 
 app.get('/', (req, res) => {
     res.send('API funcionando correctamente por: Deiby Alejandro')

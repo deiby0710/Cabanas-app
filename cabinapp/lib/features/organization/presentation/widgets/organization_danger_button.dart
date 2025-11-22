@@ -37,7 +37,7 @@ class OrganizationDangerButton extends StatelessWidget {
       label: Text(buttonText),
       style: ElevatedButton.styleFrom(
         backgroundColor: theme.colorScheme.errorContainer,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onErrorContainer,
       ),
       onPressed: () async {
         // Diálogo de confirmación

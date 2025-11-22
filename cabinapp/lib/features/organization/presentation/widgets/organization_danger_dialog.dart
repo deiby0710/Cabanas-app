@@ -30,7 +30,7 @@ class OrganizationDangerDialog extends StatelessWidget {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: theme.colorScheme.errorContainer,
-            foregroundColor: Colors.white,
+            foregroundColor: theme.colorScheme.onErrorContainer,
           ),
           onPressed: () => Navigator.of(context).pop(true),
           child: Text(confirmText),

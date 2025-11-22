@@ -1,3 +1,4 @@
+import 'package:cabinapp/features/ai/presentation/ai_chat_page.dart';
 import 'package:cabinapp/features/cabins/presentation/create_cabin_page.dart';
 import 'package:cabinapp/features/customers/presentation/create_customer_page.dart';
 import 'package:cabinapp/features/reservations/domain/reservation_model.dart';
@@ -53,6 +54,10 @@ final GoRouter appRouter = GoRouter(
         final reservation = extra?['reservation'] as ReservationModel;
         return EditReservationModal(reservation: reservation);
       },
+    ),
+    GoRoute(
+      path: '/ai',
+      builder: (context, state) => const AiChatPage(),
     ),
   ],
 );

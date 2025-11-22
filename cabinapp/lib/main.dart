@@ -1,3 +1,4 @@
+import 'package:cabinapp/features/ai/data/ai_repository.dart';
 import 'package:cabinapp/features/cabins/data/cabins_repository.dart';
 import 'package:cabinapp/features/cabins/presentation/providers/cabins_provider.dart';
 import 'package:cabinapp/features/customers/data/customers_repository.dart';
@@ -15,6 +16,7 @@ import 'package:cabinapp/core/network/api_client.dart';
 import 'package:cabinapp/core/theme/theme_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
+import 'package:cabinapp/features/ai/presentation/provider/ai_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,6 +49,11 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => ReservationsProvider(ReservationsRepository()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AiProvider(
+            AiRepository(),
+          ),
         ),
       ],
       child: Consumer<ThemeProvider>(

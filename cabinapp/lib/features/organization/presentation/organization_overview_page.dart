@@ -1,6 +1,7 @@
 import 'package:cabinapp/features/organization/presentation/widgets/my_organizations_list.dart';
 import 'package:cabinapp/features/organization/presentation/widgets/organization_danger_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'providers/organization_provider.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
@@ -57,6 +58,16 @@ class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Ir al chat IA
+          context.push('/ai');
+        },
+        backgroundColor: theme.colorScheme.primary,
+        child: const Icon(Icons.smart_toy, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView( // 👈 para permitir scroll si hay muchas orgs

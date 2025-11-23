@@ -1,4 +1,5 @@
 import 'package:cabinapp/features/customers/data/customers_repository.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class SelectClientModal extends StatefulWidget {
@@ -45,10 +46,11 @@ class _SelectClientModalState extends State<SelectClientModal> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final local = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Seleccionar cliente'),
+        title: Text(local.selectClientLabel),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -60,7 +62,7 @@ class _SelectClientModalState extends State<SelectClientModal> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay clientes disponibles'));
+            return Center(child: Text(local.noClientsAvailable));
           }
 
           final clients = snapshot.data!;
@@ -71,7 +73,7 @@ class _SelectClientModalState extends State<SelectClientModal> {
                 padding: const EdgeInsets.all(12),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Buscar cliente...',
+                    hintText: local.searchClientPlaceholder,
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
                     fillColor:

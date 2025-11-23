@@ -297,4 +297,73 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cancel => 'Cancelar';
+
+  @override
+  String get startDateLabel => 'Fecha de inicio';
+
+  @override
+  String get endDateLabel => 'Fecha de fin';
+
+  @override
+  String get selectEndDateLabel => 'Seleccionar fecha de fin';
+
+  @override
+  String get selectCabinLabel => 'Seleccionar cabaña';
+
+  @override
+  String get selectClientLabel => 'Seleccionar cliente';
+
+  @override
+  String get depositLabel => 'Abono';
+
+  @override
+  String get peopleCountLabel => 'Número de personas';
+
+  @override
+  String get createReservationButton => 'Crear reserva';
+
+  @override
+  String get noCabinsAvailable => 'No hay cabañas disponibles';
+
+  @override
+  String get searchCabinPlaceholder => 'Buscar cabaña...';
+
+  @override
+  String get noClientsAvailable => 'No hay clientes disponibles';
+
+  @override
+  String get searchClientPlaceholder => 'Buscar cliente...';
+
+  @override
+  String get peopleLabel => 'Personas';
+
+  @override
+  String get phoneLabel => 'Celular';
+
+  @override
+  String get startLabel => 'Inicio';
+
+  @override
+  String get endLabel => 'Fin';
+
+  @override
+  String get createdByLabel => 'Creado por';
+
+  @override
+  String get reservationStatusLabel => 'Estado de la reserva';
+
+  @override
+  String get depositAmountLabel => 'Monto del abono';
+
+  @override
+  String get enterValidValue => 'Ingrese un valor válido';
+
+  @override
+  String get updatingLabel => 'Actualizando...';
+
+  @override
+  String get updateButton => 'Actualizar';
+
+  @override
+  String get reservationDetailsTitle => 'Detalles de la reserva';
 }

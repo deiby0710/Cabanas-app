@@ -1,4 +1,5 @@
 import 'package:cabinapp/features/cabins/data/cabins_repository.dart';
+import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class SelectCabinModal extends StatefulWidget {
@@ -45,10 +46,11 @@ class _SelectCabinModalState extends State<SelectCabinModal> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final local = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Seleccionar cabaña'),
+        title: Text(local.selectCabinLabel),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -60,7 +62,7 @@ class _SelectCabinModalState extends State<SelectCabinModal> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay cabañas disponibles'));
+            return Center(child: Text(local.noCabinsAvailable));
           }
 
           final cabins = snapshot.data!;
@@ -71,7 +73,7 @@ class _SelectCabinModalState extends State<SelectCabinModal> {
                 padding: const EdgeInsets.all(12),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Buscar cabaña...',
+                    hintText: local.searchCabinPlaceholder,
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
                     fillColor:
@@ -95,7 +97,7 @@ class _SelectCabinModalState extends State<SelectCabinModal> {
                         cabin.name,
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      subtitle: Text('Capacidad: ${cabin.capacity}'),
+                      subtitle: Text('${local.cabinCapacityLabel}: ${cabin.capacity}'),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () => Navigator.pop(context, cabin),
                     );

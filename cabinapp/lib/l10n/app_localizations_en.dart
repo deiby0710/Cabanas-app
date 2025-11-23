@@ -297,4 +297,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get startDateLabel => 'Start date';
+
+  @override
+  String get endDateLabel => 'End date';
+
+  @override
+  String get selectEndDateLabel => 'Select end date';
+
+  @override
+  String get selectCabinLabel => 'Select cabin';
+
+  @override
+  String get selectClientLabel => 'Select client';
+
+  @override
+  String get depositLabel => 'Deposit';
+
+  @override
+  String get peopleCountLabel => 'Number of people';
+
+  @override
+  String get createReservationButton => 'Create reservation';
+
+  @override
+  String get noCabinsAvailable => 'No cabins available';
+
+  @override
+  String get searchCabinPlaceholder => 'Search cabin...';
+
+  @override
+  String get noClientsAvailable => 'No clients available';
+
+  @override
+  String get searchClientPlaceholder => 'Search client...';
+
+  @override
+  String get peopleLabel => 'People';
+
+  @override
+  String get phoneLabel => 'Phone';
+
+  @override
+  String get startLabel => 'Start';
+
+  @override
+  String get endLabel => 'End';
+
+  @override
+  String get createdByLabel => 'Created by';
+
+  @override
+  String get reservationStatusLabel => 'Reservation status';
+
+  @override
+  String get depositAmountLabel => 'Deposit amount';
+
+  @override
+  String get enterValidValue => 'Enter a valid value';
+
+  @override
+  String get updatingLabel => 'Updating...';
+
+  @override
+  String get updateButton => 'Update';
+
+  @override
+  String get reservationDetailsTitle => 'Reservation details';
 }

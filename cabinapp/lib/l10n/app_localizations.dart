@@ -673,6 +673,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @startDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDateLabel;
+
+  /// No description provided for @endDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get endDateLabel;
+
+  /// No description provided for @selectEndDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select end date'**
+  String get selectEndDateLabel;
+
+  /// No description provided for @selectCabinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select cabin'**
+  String get selectCabinLabel;
+
+  /// No description provided for @selectClientLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select client'**
+  String get selectClientLabel;
+
+  /// No description provided for @depositLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit'**
+  String get depositLabel;
+
+  /// No description provided for @peopleCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of people'**
+  String get peopleCountLabel;
+
+  /// No description provided for @createReservationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create reservation'**
+  String get createReservationButton;
+
+  /// No description provided for @noCabinsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No cabins available'**
+  String get noCabinsAvailable;
+
+  /// No description provided for @searchCabinPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search cabin...'**
+  String get searchCabinPlaceholder;
+
+  /// No description provided for @noClientsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No clients available'**
+  String get noClientsAvailable;
+
+  /// No description provided for @searchClientPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search client...'**
+  String get searchClientPlaceholder;
+
+  /// No description provided for @peopleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get peopleLabel;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phoneLabel;
+
+  /// No description provided for @startLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get startLabel;
+
+  /// No description provided for @endLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get endLabel;
+
+  /// No description provided for @createdByLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get createdByLabel;
+
+  /// No description provided for @reservationStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation status'**
+  String get reservationStatusLabel;
+
+  /// No description provided for @depositAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit amount'**
+  String get depositAmountLabel;
+
+  /// No description provided for @enterValidValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid value'**
+  String get enterValidValue;
+
+  /// No description provided for @updatingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating...'**
+  String get updatingLabel;
+
+  /// No description provided for @updateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateButton;
+
+  /// No description provided for @reservationDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation details'**
+  String get reservationDetailsTitle;
 }
 
 class _AppLocalizationsDelegate

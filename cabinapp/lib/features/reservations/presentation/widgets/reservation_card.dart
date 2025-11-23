@@ -43,7 +43,7 @@ class ReservationCard extends StatelessWidget {
         border = Colors.amber.withOpacity(0.6);
         fill = Colors.amber.withOpacity(0.15);
         iconColor = Colors.amber.shade700;
-        statusLabel = 'Separada';
+        statusLabel = local.statusPending;
         icon = Icons.access_time;
         break;
 
@@ -51,7 +51,7 @@ class ReservationCard extends StatelessWidget {
         border = Colors.green.withOpacity(0.5);
         fill = Colors.green.withOpacity(0.15);
         iconColor = Colors.green.shade600;
-        statusLabel = 'Reservada';
+        statusLabel = local.statusConfirmed;
         icon = Icons.event_available;
         break;
 
@@ -59,7 +59,7 @@ class ReservationCard extends StatelessWidget {
         border = Colors.red.withOpacity(0.5);
         fill = Colors.red.withOpacity(0.15);
         iconColor = Colors.red.shade600;
-        statusLabel = 'Cancelada';
+        statusLabel = local.statusCanceled;
         icon = Icons.cancel;
         break;
 
@@ -67,7 +67,7 @@ class ReservationCard extends StatelessWidget {
         border = Colors.blueAccent.withOpacity(0.5);
         fill = Colors.blueAccent.withOpacity(0.15);
         iconColor = Colors.blueAccent.shade700;
-        statusLabel = 'Completada';
+        statusLabel = local.statusCompleted;
         icon = Icons.check_circle;
         break;
 

@@ -1,3 +1,4 @@
+import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart'; // 👈 Import necesario
 
@@ -15,6 +16,7 @@ class CabinCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     final card = Card(
@@ -45,7 +47,7 @@ class CabinCard extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'Capacidad: $capacity',
+              '${local.cabinCapacityLabel}: $capacity',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),

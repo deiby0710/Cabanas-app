@@ -1,3 +1,4 @@
+import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cabinapp/features/reservations/data/reservations_repository.dart';
@@ -32,7 +33,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
       initialDate: widget.startDate.add(const Duration(days: 1)),
       firstDate: widget.startDate.add(const Duration(days: 1)),
       lastDate: DateTime(2030),
-      locale: const Locale('es', ''), // 👈 idioma español
+      locale: Localizations.localeOf(context),
     );
 
     if (picked != null) {
@@ -145,6 +146,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dateFormat = DateFormat('dd/MM/yyyy');
+    final local = AppLocalizations.of(context)!;
 
     return Form(
       key: _formKey,
@@ -154,7 +156,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
           // 🔹 Fecha de inicio (solo lectura)
           ListTile(
             leading: const Icon(Icons.calendar_today),
-            title: const Text('Fecha de inicio'),
+            title: Text(local.startDateLabel),
             subtitle: Text(dateFormat.format(widget.startDate)),
           ),
           const Divider(),
@@ -162,11 +164,11 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
           // 🔹 Fecha de fin
           ListTile(
             leading: const Icon(Icons.event_available),
-            title: const Text('Fecha de fin'),
+            title: Text(local.endDateLabel),
             subtitle: Text(
               fechaFin != null
                   ? dateFormat.format(fechaFin!)
-                  : 'Seleccionar fecha de fin',
+                  : local.selectEndDateLabel,
             ),
             trailing: const Icon(Icons.chevron_right),
             onTap: _selectFechaFin,
@@ -175,9 +177,9 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
 
           // 🔹 Cabaña
           ListTile(
-            title: Text(selectedCabin?.name ?? 'Seleccionar cabaña'),
+            title: Text(selectedCabin?.name ?? local.selectCabinLabel),
             subtitle: selectedCabin != null
-                ? Text('Capacidad: ${selectedCabin!.capacity}')
+                ? Text('${local.cabinCapacityLabel}: ${selectedCabin!.capacity}')
                 : null,
             leading: const Icon(Icons.cabin),
             trailing: const Icon(Icons.chevron_right),
@@ -187,7 +189,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
 
           // 🔹 Cliente
           ListTile(
-            title: Text(selectedClient?.name ?? 'Seleccionar cliente'),
+            title: Text(selectedClient?.name ?? local.selectClientLabel),
             subtitle:
                 selectedClient != null ? Text(selectedClient!.phone) : null,
             leading: const Icon(Icons.person),
@@ -199,7 +201,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
           // 🔹 Campo de abono
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Abono',
+              labelText: local.depositLabel,
               labelStyle: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -241,7 +243,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
           // 🔹 Campo de número de personas
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Número de personas',
+              labelText: local.peopleCountLabel,
               labelStyle: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -287,7 +289,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
               icon: const Icon(Icons.check),
               label: isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Crear reserva'),
+                  : Text(local.createReservationButton),
               onPressed: isLoading ? null : _submit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,

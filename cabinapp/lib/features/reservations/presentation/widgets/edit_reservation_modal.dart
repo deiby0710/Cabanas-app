@@ -1,3 +1,4 @@
+import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,21 @@ class _EditReservationModalState extends State<EditReservationModal> {
     'CANCELADA',
     'COMPLETADA',
   ];
+
+  String _translateEstado(String estado, AppLocalizations local) {
+    switch (estado) {
+      case 'PENDIENTE':
+        return local.statusPending;
+      case 'CONFIRMADA':
+        return local.confirmed;
+      case 'CANCELADA':
+        return local.statusCanceled;
+      case 'COMPLETADA':
+        return local.statusCompleted;
+      default:
+        return estado;
+    }
+  }
 
   @override
   void initState() {
@@ -78,10 +94,11 @@ class _EditReservationModalState extends State<EditReservationModal> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final r = widget.reservation;
+    final local = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalles de la reserva'),
+        title: Text(local.reservationDetailsTitle),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
       ),
@@ -110,19 +127,19 @@ class _EditReservationModalState extends State<EditReservationModal> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text('Capacidad: ${r.cabanaCapacidad ?? '-'} personas'),
+                    Text('${local.cabinCapacityLabel}: ${r.cabanaCapacidad ?? '-'} ${local.peopleLabel}'),
                     const SizedBox(height: 4),
-                    Text('Número de personas: ${r.numPersonas}'),
+                    Text('${local.peopleCountLabel}: ${r.numPersonas}'),
                     const SizedBox(height: 4),
-                    Text('Cliente: ${r.clienteNombre}'),
+                    Text('${local.client}: ${r.clienteNombre}'),
                     const SizedBox(height: 4),
-                    Text('Celular: ${r.clienteCelular.isNotEmpty ? r.clienteCelular : '-'}'),
+                    Text('${local.phoneLabel}: ${r.clienteCelular.isNotEmpty ? r.clienteCelular : '-'}'),
                     const SizedBox(height: 4),
-                    Text('Inicio: ${r.fechaInicio.toLocal().toString().split(" ").first}'),
-                    Text('Fin: ${r.fechaFin.toLocal().toString().split(" ").first}'),
+                    Text('${local.startLabel}: ${r.fechaInicio.toLocal().toString().split(" ").first}'),
+                    Text('${local.endLabel}: ${r.fechaFin.toLocal().toString().split(" ").first}'),
                     const Divider(height: 20),
                     Text(
-                      'Creado por: ${r.creadoPorNombre} (${r.creadoPorEmail})',
+                      '${local.createdByLabel}: ${r.creadoPorNombre} (${r.creadoPorEmail})',
                       style: theme.textTheme.bodySmall,
                     ),
                   ],
@@ -132,13 +149,16 @@ class _EditReservationModalState extends State<EditReservationModal> {
               // 🔹 Campo de estado
               DropdownButtonFormField<String>(
                 value: _selectedEstado,
-                decoration: const InputDecoration(
-                  labelText: 'Estado de la reserva',
+                decoration: InputDecoration(
+                  labelText: local.reservationStatusLabel,
                   border: OutlineInputBorder(),
                 ),
-                items: _estados
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
+                items: _estados.map((estado) {
+                  return DropdownMenuItem(
+                    value: estado, // 👈 el valor REAL queda intacto
+                    child: Text(_translateEstado(estado, local)), // 👈 aquí se traduce
+                  );
+                }).toList(),
                 onChanged: (v) => setState(() => _selectedEstado = v!),
               ),
               const SizedBox(height: 20),
@@ -146,8 +166,8 @@ class _EditReservationModalState extends State<EditReservationModal> {
               // 🔹 Campo de abono
               TextFormField(
                 controller: _abonoController,
-                decoration: const InputDecoration(
-                  labelText: 'Monto del abono',
+                decoration: InputDecoration(
+                  labelText: local.depositAmountLabel,
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.attach_money),
                 ),
@@ -156,7 +176,7 @@ class _EditReservationModalState extends State<EditReservationModal> {
                 validator: (v) {
                   final value = double.tryParse(v ?? '');
                   if (value == null || value < 0) {
-                    return 'Ingrese un valor válido';
+                    return local.enterValidValue;
                   }
                   return null;
                 },
@@ -178,7 +198,7 @@ class _EditReservationModalState extends State<EditReservationModal> {
                           ),
                         )
                       : const Icon(Icons.save),
-                  label: Text(_loading ? 'Actualizando...' : 'Actualizar'),
+                  label: Text(_loading ? local.updatingLabel : local.updateButton),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
                     backgroundColor: theme.colorScheme.primary,

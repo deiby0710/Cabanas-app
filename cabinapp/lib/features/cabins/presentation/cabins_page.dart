@@ -51,7 +51,7 @@ class _CabinsPageState extends State<CabinsPage> {
 
             if (cabinsProvider.cabins.isEmpty) {
               return Center(
-                child: Text(local.noCabinsYet), // 👈 agrega este texto a tu traducción
+                child: Text(local.noCabinsYet), 
               );
             }
 

@@ -89,17 +89,6 @@ class _ReservationsPageState extends State<ReservationsPage> {
               });
             },
             eventLoader: (day) {
-              // 🔹 Muestra cuántas reservas hay disponibles en el provider
-              print('📅 Cargando eventos para el día: $day');
-              print('📦 Total de reservas en provider: ${provider.reservations.length}');
-
-              // 🔹 Muestra los IDs y fechas de cada reserva
-              for (final r in provider.reservations) {
-                print('➡️ Reserva ID: ${r.id} | Inicio: ${r.fechaInicio} | Fin: ${r.fechaFin}');
-                print('Local inicio: ${r.fechaInicio.toLocal()}');
-                print('Local fin: ${r.fechaFin.toLocal()}');
-              }
-
               final reservasDelDia = provider.reservations.where((r) {
                 final start = DateTime(r.fechaInicio.toLocal().year, r.fechaInicio.toLocal().month, r.fechaInicio.toLocal().day);
                 final end   = DateTime(r.fechaFin.toLocal().year, r.fechaFin.toLocal().month, r.fechaFin.toLocal().day);
@@ -112,9 +101,6 @@ class _ReservationsPageState extends State<ReservationsPage> {
 
                 return coincide;
               }).toList();
-
-              print('🎯 Reservas encontradas para el día $day: ${reservasDelDia.length}');
-              print('-----------------------------------------');
 
               return reservasDelDia;
             },

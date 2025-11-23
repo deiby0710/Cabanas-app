@@ -133,30 +133,30 @@ export async function routeIntent(intent, params) {
     if (intent === "check_cabin_availability") {
 
         const reservas = await listReservationsService(adminId, orgId, {
-        cabanaId,
-        desde: start,
-        hasta: end,
+            cabanaId,
+            desde: start,
+            hasta: end,
         });
 
         if (!reservas) {
-        return {
-            intent,
-            error: "NO_PERMISSION_OR_INVALID_ORG",
-            message: "No tienes acceso a esta organización o no perteneces a ella.",
-            orgId,
-            adminId
-        };
+            return {
+                intent,
+                error: "NO_PERMISSION_OR_INVALID_ORG",
+                message: "No tienes acceso a esta organización o no perteneces a ella.",
+                orgId,
+                adminId
+            };
         }
 
         const disponible = reservas.length === 0;
 
         return {
-        intent,
-        disponible,
-        reservas,
-        cabanaId,
-        fechaInicio: start,
-        fechaFin: end,
+            intent,
+            disponible,
+            reservas,
+            cabanaId,
+            fechaInicio: start,
+            fechaFin: end,
         };
     }
 
@@ -166,25 +166,25 @@ export async function routeIntent(intent, params) {
     if (intent === "list_reservations_by_range") {
 
         const reservas = await listReservationsService(adminId, orgId, {
-        desde: start,
-        hasta: end,
+            desde: start,
+            hasta: end,
         });
 
         if (!reservas) {
-        return {
-            intent,
-            error: "NO_PERMISSION_OR_INVALID_ORG",
-            message: "No tienes acceso a esta organización.",
-            orgId,
-            adminId
-        };
+            return {
+                intent,
+                error: "NO_PERMISSION_OR_INVALID_ORG",
+                message: "No tienes acceso a esta organización.",
+                orgId,
+                adminId
+            };
         }
 
         return {
-        intent,
-        reservas,
-        fechaInicio: start,
-        fechaFin: end,
+            intent,
+            reservas,
+            fechaInicio: start,
+            fechaFin: end,
         };
     }
 
@@ -192,7 +192,6 @@ export async function routeIntent(intent, params) {
     // INTENT 3: Quién ocupa X cabaña en fecha Y
     // =========================================
     if (intent === "who_has_cabin_on_date") {
-
         const fechaTexto =
         params.fecha ??
         params.date ??
@@ -202,37 +201,37 @@ export async function routeIntent(intent, params) {
         const fechaReal = fechaTexto ? new Date(fechaTexto) : null;
 
         if (!fechaReal) {
-        return {
-            intent,
-            error: "INVALID_DATE",
-            message: `No pude interpretar la fecha '${fechaTexto}'.`
-        };
+            return {
+                intent,
+                error: "INVALID_DATE",
+                message: `No pude interpretar la fecha '${fechaTexto}'.`
+            };
         }
 
         const reservas = await listReservationsService(adminId, orgId, {
-        cabanaId,
-        desde: fechaReal,
-        hasta: fechaReal,
+            cabanaId,
+            desde: fechaReal,
+            hasta: fechaReal,
         });
 
         if (!reservas) {
-        return {
-            intent,
-            error: "NO_PERMISSION_OR_INVALID_ORG",
-            message: "No tienes acceso a esta organización.",
-        };
+            return {
+                intent,
+                error: "NO_PERMISSION_OR_INVALID_ORG",
+                message: "No tienes acceso a esta organización.",
+            };
         }
 
         const occupant = reservas.find(r =>
-        fechaReal >= new Date(r.fechaInicio) &&
-        fechaReal < new Date(r.fechaFin)
+            fechaReal >= new Date(r.fechaInicio) &&
+            fechaReal < new Date(r.fechaFin)
         );
 
         return {
-        intent,
-        ocupante: occupant ?? null,
-        cabanaId,
-        fecha: fechaReal
+            intent,
+            ocupante: occupant ?? null,
+            cabanaId,
+            fecha: fechaReal
         };
     }
 
@@ -240,18 +239,17 @@ export async function routeIntent(intent, params) {
     // INTENT 4: Qué cabañas están ocupadas entre fechas
     // ==========================================================
     if (intent === "occupied_cabins_between") {
-
         const reservas = await listReservationsService(adminId, orgId, {
-        desde: start,
-        hasta: end,
+            desde: start,
+            hasta: end,
         });
 
         if (!reservas) {
-        return {
-            intent,
-            error: "NO_PERMISSION_OR_INVALID_ORG",
-            message: "No tienes acceso a esta organización.",
-        };
+            return {
+                intent,
+                error: "NO_PERMISSION_OR_INVALID_ORG",
+                message: "No tienes acceso a esta organización.",
+            };
         }
 
         const cabins = [
@@ -259,11 +257,11 @@ export async function routeIntent(intent, params) {
         ];
 
         return {
-        intent,
-        fechaInicio: start,
-        fechaFin: end,
-        cabins,
-        reservas,
+            intent,
+            fechaInicio: start,
+            fechaFin: end,
+            cabins,
+            reservas,
         };
     }
 
@@ -302,52 +300,51 @@ export async function routeIntent(intent, params) {
     // INTENT 7: Listar reservas por nombre de cliente
     // ================================================
     if (intent === "list_reservations_by_customer") {
-
         // El modelo envía el nombre del cliente en params.customerName
         const customerName = params.customerName ?? params.clienteName;
 
         if (!customerName) {
             return {
-            intent,
-            error: "MISSING_CUSTOMER_NAME",
-            message: "Necesito el nombre del cliente para buscar sus reservas."
+                intent,
+                error: "MISSING_CUSTOMER_NAME",
+                message: "Necesito el nombre del cliente para buscar sus reservas."
             };
         }
 
         // Buscar cliente por nombre (coincidencia parcial, ignore case)
         const cliente = await prisma.cliente.findFirst({
             where: {
-            organizacionId: orgId,
-            nombre: { contains: customerName, mode: "insensitive" }
+                organizacionId: orgId,
+                nombre: { contains: customerName, mode: "insensitive" }
             }
         });
 
         if (!cliente) {
             return {
-            intent,
-            error: "CUSTOMER_NOT_FOUND",
-            message: `No encontré un cliente llamado '${customerName}' en esta organización.`,
-            customerName
+                intent,
+                error: "CUSTOMER_NOT_FOUND",
+                message: `No encontré un cliente llamado '${customerName}' en esta organización.`,
+                customerName
             };
         }
 
         // Listar reservas del cliente encontrado
         const reservas = await prisma.reserva.findMany({
             where: {
-            organizacionId: orgId,
-            clienteId: cliente.id
+                organizacionId: orgId,
+                clienteId: cliente.id
             },
             include: {
-            cabana: { select: { id: true, nombre: true } }
+                cabana: { select: { id: true, nombre: true } }
             }
         });
 
         return {
             intent,
             cliente: {
-            id: cliente.id,
-            nombre: cliente.nombre,
-            celular: cliente.celular,
+                id: cliente.id,
+                nombre: cliente.nombre,
+                celular: cliente.celular,
             },
             reservas
         };
@@ -357,7 +354,6 @@ export async function routeIntent(intent, params) {
     // INTENT 8: Obtener cliente por nombre
     // ===============================================
     if (intent === "get_customer_by_name") {
-
         const customerName =
             params.customerName ??
             params.clienteName ??
@@ -366,41 +362,41 @@ export async function routeIntent(intent, params) {
 
         if (!customerName) {
             return {
-            intent,
-            error: "MISSING_CUSTOMER_NAME",
-            message: "Necesito el nombre del cliente para buscarlo."
+                intent,
+                error: "MISSING_CUSTOMER_NAME",
+                message: "Necesito el nombre del cliente para buscarlo."
             };
         }
 
         // Buscar cliente por coincidencia parcial, ignore case
         const cliente = await prisma.cliente.findFirst({
             where: {
-            organizacionId: orgId,
-            nombre: { contains: customerName, mode: "insensitive" }
+                organizacionId: orgId,
+                nombre: { contains: customerName, mode: "insensitive" }
             }
         });
 
         if (!cliente) {
             return {
-            intent,
-            error: "CUSTOMER_NOT_FOUND",
-            message: `No encontré ningún cliente llamado '${customerName}'.`,
-            customerName
+                intent,
+                error: "CUSTOMER_NOT_FOUND",
+                message: `No encontré ningún cliente llamado '${customerName}'.`,
+                customerName
             };
         }
 
         return {
-            intent,
-            cliente: {
-            id: cliente.id,
-            nombre: cliente.nombre,
-            celular: cliente.celular,
+                intent,
+                cliente: {
+                id: cliente.id,
+                nombre: cliente.nombre,
+                celular: cliente.celular,
             }
         };
     }
 
     // ===============================================
-    // INTENT 10: Obtener información de una cabaña
+    // INTENT 9: Obtener información de una cabaña
     // ===============================================
     if (intent === "get_cabin_info") {
 
@@ -412,42 +408,42 @@ export async function routeIntent(intent, params) {
 
         if (!cabinName) {
             return {
-            intent,
-            error: "MISSING_CABIN_NAME",
-            message: "Necesito el nombre de la cabaña para buscarla."
+                intent,
+                error: "MISSING_CABIN_NAME",
+                message: "Necesito el nombre de la cabaña para buscarla."
             };
         }
 
         // Buscar cabaña por coincidencia parcial (insensible a mayúsculas)
         const cabana = await prisma.cabana.findFirst({
             where: {
-            organizacionId: orgId,
-            nombre: { contains: cabinName, mode: "insensitive" }
+                organizacionId: orgId,
+                nombre: { contains: cabinName, mode: "insensitive" }
             }
         });
 
         if (!cabana) {
             return {
-            intent,
-            error: "CABIN_NOT_FOUND",
-            message: `No encontré la cabaña '${cabinName}' en esta organización.`,
-            cabinName
+                intent,
+                error: "CABIN_NOT_FOUND",
+                message: `No encontré la cabaña '${cabinName}' en esta organización.`,
+                cabinName
             };
         }
 
         return {
-            intent,
-            cabana: {
-            id: cabana.id,
-            nombre: cabana.nombre,
-            capacidad: cabana.capacidad,
-            organizacionId: cabana.organizacionId
+                intent,
+                cabana: {
+                id: cabana.id,
+                nombre: cabana.nombre,
+                capacidad: cabana.capacidad,
+                organizacionId: cabana.organizacionId
             }
         };
     }
 
     // =======================================================
-    // INTENT 11: Listar reservas por nombre de cabaña
+    // INTENT 10: Listar reservas por nombre de cabaña
     // =======================================================
     if (intent === "list_reservations_by_cabin") {
 
@@ -459,52 +455,52 @@ export async function routeIntent(intent, params) {
 
         if (!cabinName) {
             return {
-            intent,
-            error: "MISSING_CABIN_NAME",
-            message: "Necesito el nombre de la cabaña para buscar sus reservas."
+                intent,
+                error: "MISSING_CABIN_NAME",
+                message: "Necesito el nombre de la cabaña para buscar sus reservas."
             };
         }
 
         // Resolver cabaña por nombre (insensible a mayúsculas)
         const cabana = await prisma.cabana.findFirst({
             where: {
-            organizacionId: orgId,
-            nombre: { contains: cabinName, mode: "insensitive" }
+                organizacionId: orgId,
+                nombre: { contains: cabinName, mode: "insensitive" }
             }
         });
 
         if (!cabana) {
             return {
-            intent,
-            error: "CABIN_NOT_FOUND",
-            message: `No encontré la cabaña '${cabinName}' en esta organización.`,
-            cabinName
+                intent,
+                error: "CABIN_NOT_FOUND",
+                message: `No encontré la cabaña '${cabinName}' en esta organización.`,
+                cabinName
             };
         }
 
         // Buscar reservas de esa cabaña
         const reservas = await prisma.reserva.findMany({
             where: {
-            organizacionId: orgId,
-            cabanaId: cabana.id
+                organizacionId: orgId,
+                cabanaId: cabana.id
             },
             include: {
-            cliente: { select: { id: true, nombre: true, celular: true } }
+                cliente: { select: { id: true, nombre: true, celular: true } }
             }
         });
 
         return {
             intent,
             cabana: {
-            id: cabana.id,
-            nombre: cabana.nombre
+                id: cabana.id,
+                nombre: cabana.nombre
             },
             reservas
         };
     }
 
     // =======================================================
-    // INTENT 12: Contar reservas en un rango
+    // INTENT 11: Contar reservas en un rango
     // =======================================================
     if (intent === "count_reservations") {
 
@@ -517,20 +513,20 @@ export async function routeIntent(intent, params) {
 
         if (!start || !end || isNaN(start) || isNaN(end)) {
             return {
-            intent,
-            error: "INVALID_DATE",
-            message: "Las fechas enviadas no son válidas.",
-            fechaInicio,
-            fechaFin
+                intent,
+                error: "INVALID_DATE",
+                message: "Las fechas enviadas no son válidas.",
+                fechaInicio,
+                fechaFin
             };
         }
 
         // Contar reservas en ese rango
         const total = await prisma.reserva.count({
             where: {
-            organizacionId: orgId,
-            fechaInicio: { gte: start },
-            fechaFin:    { lte: end }
+                organizacionId: orgId,
+                fechaInicio: { gte: start },
+                fechaFin:    { lte: end }
             }
         });
 

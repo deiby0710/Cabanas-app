@@ -56,7 +56,7 @@ NO escribas explicaciones.
  * Genera un mensaje natural usando los datos reales devueltos por routeIntent.
  * La IA NO puede inventar nada porque solo usa los datos que le enviamos aquí.
  */
-async function generateNaturalResponse(intent, params, data) {
+async function generateNaturalResponse(intent, params, data, message) {
   const prompt = `
 Eres un asistente útil de CabinApp.
 Debes generar una respuesta clara, amable, en ESPAÑOL,
@@ -80,34 +80,80 @@ Puedes usar emojis si ayudan, pero no abuses.
 `;
 
   if (intent === "small_talk") {
-    const text = params?.originalMessage?.toLowerCase() ?? "";
 
-    if (text.includes("gracias") || text.includes("thank")) {
-      return "¡Con gusto! 😊 ¿Necesitas algo más?";
-    }
+    const smalltalkPrompt = `
+  Eres CabinAI, un asistente amable y conversacional.
+  Tu objetivo es conversar naturalmente con el usuario.
 
-    if (text.includes("quien eres") || text.includes("who are you")) {
-      return "Soy el asistente inteligente de CabinApp 🤖. Puedo ayudarte con reservas, clientes y cabañas. ¿Qué necesitas?";
-    }
+  NO inventes datos del sistema (reservas, clientes, cabañas).
+  NO uses IDs ni tecnicismos.
+  Solo conversación casual o información general sobre la app.
 
-    if (text.includes("que puedes hacer") || text.includes("what can you do")) {
-      return "Puedo ayudarte a consultar disponibilidad de cabañas, revisar reservas, listar clientes y responder preguntas del sistema. ¿Qué deseas hacer?";
-    }
+  Información fija:
+  - Creadores: Deiby Alejandro Delgado y David Santiago Enríquez.
+  - CabinApp: sistema para gestionar cabañas, clientes y reservas.
+  - Puedes ayudar consultando disponibilidad, listar cabañas, buscar clientes, ver reservas, etc.
 
-    if (text.includes("buenos días")) {
-      return "¡Buenos días! ☀️ ¿En qué puedo ayudarte hoy?";
-    }
+  REGLAS:
+  - NO inventes datos del sistema (reservas, clientes, cabañas).
+  - Para preguntas personales o casuales, responde como un asistente cálido.
+  - No menciones IDs.
+  - No uses tecnicismos.
+  - Mantén respuestas breves y naturales.
 
-    if (text.includes("buenas noches")) {
-      return "¡Buenas noches! 🌙 ¿Necesitas revisar alguna reserva o cabaña?";
-    }
+  Mensaje del usuario:
+  "${message}"
 
-    // respuesta general
-    return "¡Hola! 😊 ¿En qué puedo ayudarte hoy?";
+  Responde de manera natural y humana.
+    `;
+
+    const response = await askLLM([
+      { role: "system", content: smalltalkPrompt },
+      { role: "user", content: message }
+    ]);
+
+    return response.choices[0].message.content;
   }
 
   const response = await askLLM([
-    { role: "system", content: "Eres un generador de respuestas para CabinApp. Solo usa los datos dados." },
+    { role: "system", content: `
+Eres un generador de respuestas para CabinApp.
+Convierte los datos del backend en mensajes naturales y útiles para el usuario final.
+
+REGLAS OBLIGATORIAS:
+
+1. **NUNCA menciones IDs.**
+   - Ignora cualquier campo cuyo nombre sea "id" o termine en "Id" o contenga "id".
+   - Ejemplos prohibidos: "id", "clienteId", "cabanaId", "reservaId", "adminId".
+   - No incluyas números internos de base de datos.
+
+2. **Usa siempre los nombres reales de los objetos.**
+   - cliente.nombre
+   - cabana.nombre
+   - admin.nombre
+   - ocupante.nombre
+   - creadoPor.nombre
+   - Si no hay nombre: di “no tengo el nombre disponible”.
+
+3. **Nunca inventes información.**
+   - No inventes nombres de clientes, cabañas, fechas o estados.
+   - Usa únicamente lo que aparece en la sección "DATOS".
+
+4. **Nunca muestres estructuras técnicas o internas.**
+   - No muestres JSON, objetos, listas técnicas, claves internas, ni campos del backend.
+   - No uses palabras como “registro”, “objeto”, “nodo”, “propiedad”, “backend”.
+
+5. **Transforma los datos en lenguaje natural.**
+   - Si hay varias reservas, haz un resumen humano.
+   - Si solo hay una, descríbela de manera amable.
+   - Si no hay resultados, dilo claramente.
+
+6. **Tono: cálido, profesional, amable, claro y breve.**
+   - Puedes usar emojis, pero no abuses.
+
+Estas reglas son obligatorias. Si un dato falta o está incompleto, dilo de forma natural sin inventar nada.
+`
+  },
     { role: "user", content: prompt }
   ]);
 
@@ -135,7 +181,8 @@ export async function chatbotHandleMessage(message, adminId, orgId) {
   const natural = await generateNaturalResponse(
     detection.intent,
     detection.params,
-    rawData
+    rawData,
+    message
   );
 
   return {

@@ -811,6 +811,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reservation details'**
   String get reservationDetailsTitle;
+
+  /// No description provided for @selectCabinAndClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a cabin and a client'**
+  String get selectCabinAndClient;
+
+  /// No description provided for @cabinAlreadyReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'The cabin is already reserved for those dates'**
+  String get cabinAlreadyReserved;
+
+  /// No description provided for @reservationCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation created successfully 🎉'**
+  String get reservationCreatedSuccess;
+
+  /// No description provided for @reservationUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation updated successfully ✅'**
+  String get reservationUpdatedSuccess;
 }
 
 class _AppLocalizationsDelegate

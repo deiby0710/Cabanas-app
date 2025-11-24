@@ -1,11 +1,11 @@
 import 'package:cabinapp/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:cabinapp/features/reservations/data/reservations_repository.dart';
 import 'package:cabinapp/features/reservations/presentation/widgets/select_cabin_modal.dart';
 import 'package:cabinapp/features/reservations/presentation/widgets/select_client_modal.dart';
 import 'package:go_router/go_router.dart';
-
 
 class CreateReservationForm extends StatefulWidget {
   final DateTime startDate;
@@ -42,18 +42,20 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
   }
 
   Future<void> _submit() async {
+    final local = AppLocalizations.of(context)!;
+
     if (!_formKey.currentState!.validate()) return;
 
     if (selectedCabin == null || selectedClient == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selecciona una cabaña y un cliente')),
+        SnackBar(content: Text(local.selectCabinAndClient)),
       );
       return;
     }
 
     if (fechaFin == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selecciona la fecha de fin')),
+        SnackBar(content: Text(local.selectEndDateLabel)),
       );
       return;
     }
@@ -94,8 +96,8 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
 
       if (hasOverlap) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('❌ La cabaña ya está reservada en esas fechas'),
+          SnackBar(
+            content: Text(local.cabinAlreadyReserved),
           ),
         );
         setState(() => isLoading = false);
@@ -113,7 +115,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Reserva creada correctamente 🎉')),
+        SnackBar(content: Text(local.reservationCreatedSuccess)),
       );
 
       if (mounted) context.pop(true);
@@ -235,6 +237,9 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
               ),
             ),
             keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
             onSaved: (v) => abono = double.tryParse(v ?? '0'),
           ),
 
@@ -277,6 +282,9 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
               ),
             ),
             keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
             onSaved: (v) => numPersonas = int.tryParse(v ?? '1'),
           ),
 
@@ -293,7 +301,7 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
               onPressed: isLoading ? null : _submit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: theme.colorScheme.onPrimary,
                 minimumSize: const Size(double.infinity, 48),
               ),
             ),

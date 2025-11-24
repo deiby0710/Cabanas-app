@@ -56,7 +56,7 @@ class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
       appBar: AppBar(
         title: Text(local.organizationTitle),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -64,7 +64,7 @@ class _OrganizationOverviewPageState extends State<OrganizationOverviewPage> {
           context.push('/ai');
         },
         backgroundColor: theme.colorScheme.primary,
-        child: const Icon(Icons.smart_toy, color: Colors.white),
+        child: Icon(Icons.smart_toy, color: theme.colorScheme.onPrimary,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 

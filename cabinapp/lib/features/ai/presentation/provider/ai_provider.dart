@@ -16,10 +16,23 @@ class AiProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   AiProvider(this._repository) {
+    // Obtener el idioma del sistema
+    final lang = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+
+    // Mensaje inicial dependiendo del idioma
+    String greeting;
+
+    if (lang == "en") {
+      greeting = "Hello 👋 I'm CabinAI, how can I help you today?";
+    } else if (lang == "es") {
+      greeting = "Hola 👋 Soy CabinAI, ¿en qué puedo ayudarte?";
+    } else {
+      greeting = "Hola 👋 Soy CabinAI, ¿en qué puedo ayudarte?";
+    }
     // Mensaje inicial
     _messages.add(ChatMessage(
       id: _uuid.v4(),
-      content: "Hola 👋 Soy CabinAI, ¿en qué puedo ayudarte?",
+      content: greeting,
       isUser: false,
       createdAt: DateTime.now(),
     ));

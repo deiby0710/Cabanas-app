@@ -52,7 +52,7 @@ class _SelectCabinModalState extends State<SelectCabinModal> {
       appBar: AppBar(
         title: Text(local.selectCabinLabel),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: FutureBuilder<List<CabinItem>>(
         future: _futureCabins,

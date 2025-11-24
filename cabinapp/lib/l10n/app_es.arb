@@ -118,5 +118,9 @@
   "enterValidValue": "Ingrese un valor válido",
   "updatingLabel": "Actualizando...",
   "updateButton": "Actualizar",
-  "reservationDetailsTitle": "Detalles de la reserva"
+  "reservationDetailsTitle": "Detalles de la reserva",
+  "selectCabinAndClient": "Selecciona una cabaña y un cliente",
+  "cabinAlreadyReserved": "La cabaña ya está reservada en esas fechas",
+  "reservationCreatedSuccess": "Reserva creada correctamente 🎉",
+  "reservationUpdatedSuccess": "Reserva actualizada correctamente ✅"
 }

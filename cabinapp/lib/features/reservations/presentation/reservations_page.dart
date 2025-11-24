@@ -74,7 +74,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
       appBar: AppBar(
         title: Text(local.reservations),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: Column(
         children: [
@@ -170,7 +170,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
           }
         },
         backgroundColor: theme.colorScheme.primary,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: Icon(Icons.add, color: theme.colorScheme.onPrimary,),
       ),
     );
   }

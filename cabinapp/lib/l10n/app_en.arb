@@ -118,5 +118,9 @@
   "enterValidValue": "Enter a valid value",
   "updatingLabel": "Updating...",
   "updateButton": "Update",
-  "reservationDetailsTitle": "Reservation details"
+  "reservationDetailsTitle": "Reservation details",
+  "selectCabinAndClient": "Select a cabin and a client",
+  "cabinAlreadyReserved": "The cabin is already reserved for those dates",
+  "reservationCreatedSuccess": "Reservation created successfully 🎉",
+  "reservationUpdatedSuccess": "Reservation updated successfully ✅"
 }

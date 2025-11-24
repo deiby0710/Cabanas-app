@@ -32,6 +32,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Future<void> _submit(BuildContext context) async {
     final authProvider = context.read<AuthProvider>();
+    final local = AppLocalizations.of(context)!;
 
     if (!_formKey.currentState!.validate()) return;
 
@@ -44,7 +45,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
       if (authProvider.user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registro exitoso')),
+          SnackBar(content: Text(local.registrationSuccess)),
         );
         context.go('/selectOrganization');
       }

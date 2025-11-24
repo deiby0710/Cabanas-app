@@ -366,4 +366,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reservationDetailsTitle => 'Reservation details';
+
+  @override
+  String get selectCabinAndClient => 'Select a cabin and a client';
+
+  @override
+  String get cabinAlreadyReserved =>
+      'The cabin is already reserved for those dates';
+
+  @override
+  String get reservationCreatedSuccess => 'Reservation created successfully 🎉';
+
+  @override
+  String get reservationUpdatedSuccess => 'Reservation updated successfully ✅';
 }

@@ -14,7 +14,7 @@ class CreateCustomerPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(local.addClient),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

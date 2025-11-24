@@ -19,13 +19,18 @@ async function detectIntent(message, adminId, orgId) {
       role: "system",
       content: SYSTEM_PROMPT + `
 IMPORTANTE:
-Debes responder SIEMPRE con un JSON estricto:
+
+1. Detecta automáticamente el idioma del mensaje del usuario.
+2. Devuelve SIEMPRE el JSON en ese mismo idioma si el intent lo permite.
+3. Si el intent requiere español (por ejemplo datos del backend), puedes usar español para las claves, pero el contenido de texto que venga del usuario NO lo traduzcas.
+4. El JSON debe ser estrictamente válido:
+
 {
   "intent": "nombre_del_intent",
   "params": { ... }
 }
 NO escribas texto fuera del JSON.
-NO escribas explicaciones.
+NO explicaciones.
 `
         },
         { role: "user", content: message }
@@ -59,7 +64,6 @@ NO escribas explicaciones.
 async function generateNaturalResponse(intent, params, data, message) {
   const prompt = `
 Eres un asistente útil de CabinApp.
-Debes generar una respuesta clara, amable, en ESPAÑOL,
 basada SOLO en los datos proporcionados a continuación.
 
 Nunca inventes nombres, fechas o datos que no estén en la sección "DATOS".
@@ -85,9 +89,19 @@ Puedes usar emojis si ayudan, pero no abuses.
   Eres CabinAI, un asistente amable y conversacional.
   Tu objetivo es conversar naturalmente con el usuario.
 
-  NO inventes datos del sistema (reservas, clientes, cabañas).
-  NO uses IDs ni tecnicismos.
-  Solo conversación casual o información general sobre la app.
+  Debes detectar automáticamente el idioma del usuario a partir de este mensaje:
+  "${message}"
+
+  Reglas de idioma:
+  - Si el usuario habla en español → responde en español.
+  - Si el usuario habla en inglés → responde en inglés.
+  - Si mezcla idiomas, responde en el idioma dominante.
+  - No traduzcas el contenido del usuario.
+
+  Reglas de contenido:
+  - NO inventes datos del sistema.
+  - NO menciones IDs.
+  - Responde breve, cálido y humano.
 
   Información fija:
   - Creadores: Deiby Alejandro Delgado y David Santiago Enríquez.
@@ -118,6 +132,15 @@ Puedes usar emojis si ayudan, pero no abuses.
   const response = await askLLM([
     { role: "system", content: `
 Eres un generador de respuestas para CabinApp.
+DEBES DETECTAR AUTOMÁTICAMENTE EL IDIOMA DEL USUARIO según el texto:
+"${message}"
+Reglas para idioma:
+- Si el usuario escribe en español → responde en español.
+- Si el usuario escribe en inglés → responde en inglés.
+- Si el usuario cambia de idioma, tú también cambias.
+- Nunca mezcles idiomas en la misma respuesta.
+- No traduzcas datos que vienen de la base de datos, a menos que sean los estados de la reserva como pendiente, confirmada, cancelado y completada. 
+
 Convierte los datos del backend en mensajes naturales y útiles para el usuario final.
 
 REGLAS OBLIGATORIAS:

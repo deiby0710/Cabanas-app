@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/organization_provider.dart';
-// import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import de traducciones
+import 'package:cabinapp/l10n/app_localizations.dart'; // 👈 Import de traducciones
 
 class CreateOrgForm extends StatefulWidget {
   const CreateOrgForm({super.key});
@@ -22,6 +22,7 @@ class _CreateOrgFormState extends State<CreateOrgForm> {
   }
 
   Future<void> _submit() async {
+    final local = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
 
     // Accedemos al provider
@@ -39,7 +40,7 @@ class _CreateOrgFormState extends State<CreateOrgForm> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Organización creada exitosamente')),
+        SnackBar(content: Text(local.registrationSuccess)),
       );
       context.go('/home');
       _nameController.clear();

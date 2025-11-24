@@ -366,4 +366,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reservationDetailsTitle => 'Detalles de la reserva';
+
+  @override
+  String get selectCabinAndClient => 'Selecciona una cabaña y un cliente';
+
+  @override
+  String get cabinAlreadyReserved =>
+      'La cabaña ya está reservada en esas fechas';
+
+  @override
+  String get reservationCreatedSuccess => 'Reserva creada correctamente 🎉';
+
+  @override
+  String get reservationUpdatedSuccess => 'Reserva actualizada correctamente ✅';
 }

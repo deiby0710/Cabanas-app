@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(local.settingsTitle),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
         actions: const [
           ThemeToggleButton(),
         ],

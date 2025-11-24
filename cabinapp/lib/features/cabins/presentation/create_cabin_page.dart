@@ -14,7 +14,7 @@ class CreateCabinPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(local.addCabin),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(24),

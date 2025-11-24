@@ -11,9 +11,9 @@ class AddCustomerButton extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () => context.push('/customers/create'),
       backgroundColor: theme.colorScheme.primary,
-      child: const Icon(
+      child: Icon(
         Icons.person_add,
-        color: Colors.white,
+        color: theme.colorScheme.onPrimary,
       ),
     );
   }

@@ -58,6 +58,7 @@ class _EditReservationModalState extends State<EditReservationModal> {
   }
 
   Future<void> _updateReservation() async {
+    final local = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
 
@@ -77,7 +78,7 @@ class _EditReservationModalState extends State<EditReservationModal> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Reserva actualizada correctamente ✅')),
+          SnackBar(content: Text(local.reservationUpdatedSuccess)),
         );
         context.pop(true);
       }
@@ -100,7 +101,7 @@ class _EditReservationModalState extends State<EditReservationModal> {
       appBar: AppBar(
         title: Text(local.reservationDetailsTitle),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -202,7 +203,7 @@ class _EditReservationModalState extends State<EditReservationModal> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 48),
                     backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: theme.colorScheme.onPrimary,
                   ),
                 ),
               ),

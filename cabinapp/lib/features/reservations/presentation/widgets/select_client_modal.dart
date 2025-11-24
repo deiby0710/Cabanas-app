@@ -52,7 +52,7 @@ class _SelectClientModalState extends State<SelectClientModal> {
       appBar: AppBar(
         title: Text(local.selectClientLabel),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: FutureBuilder<List<ClientItem>>(
         future: _futureClients,

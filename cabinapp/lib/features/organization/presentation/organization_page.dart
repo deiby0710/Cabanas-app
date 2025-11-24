@@ -23,7 +23,7 @@ class _SelectOrganizationPageState extends State<SelectOrganizationPage> {
       appBar: AppBar(
         title: Text(local.organizationTitle),
         backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

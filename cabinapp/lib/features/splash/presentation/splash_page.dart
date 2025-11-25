@@ -25,7 +25,7 @@ class _SplashPageState extends State<SplashPage> {
     final orgProvider = context.read<OrganizationProvider>(); // 👈 Agregado
 
     // 🔹 Mostrar el logo unos segundos
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 4));
 
     // 🔹 Intentar autologin
     await authProvider.tryAutoLogin();
@@ -35,7 +35,7 @@ class _SplashPageState extends State<SplashPage> {
       await orgProvider.loadActiveOrganization(); // 👈 Nuevo paso
 
       // 🔹 Espera unos segundos más para una transición suave
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 4));
 
       if (!mounted) return;
 

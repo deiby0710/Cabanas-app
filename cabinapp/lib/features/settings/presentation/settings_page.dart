@@ -1,3 +1,5 @@
+import 'package:cabinapp/features/settings/presentation/widgets/created_by_label.dart';
+import 'package:cabinapp/features/settings/presentation/widgets/organization_button.dart';
 import 'package:flutter/material.dart';
 import 'package:cabinapp/features/settings/presentation/widgets/logout_button.dart';
 import 'package:cabinapp/features/settings/presentation/widgets/theme_button.dart';
@@ -26,13 +28,19 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 👤 Información del usuario
             const UserInfoCard(),
 
             const SizedBox(height: 30),
 
-            // 🔹 Botón de logout
+            const OrganizationButton(),
+
+            const SizedBox(height: 30),
+
             const LogoutButton(),
+
+            const SizedBox(height: 40),
+
+            const CreatedByLabel(),
           ],
         ),
       ),

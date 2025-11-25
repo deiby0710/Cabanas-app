@@ -8,18 +8,63 @@ import {
 
 const prisma = new PrismaClient();
 
+async function isCabinAvailable(organizacionId, cabanaId, fechaInicio, fechaFin) {
+    // Buscar reservas que se traslapen
+    const conflictingReservation = await prisma.reserva.findFirst({
+        where: {
+            organizacionId,
+            cabanaId,
+            estado: { in: ['PENDIENTE', 'CONFIRMADA'] },
+            // Traslape: (startA < endB) && (endA > startB)
+            AND: [
+                { fechaInicio: { lt: fechaFin } },
+                { fechaFin: { gt: fechaInicio } },
+            ],
+        },
+        select: {
+            id: true,
+            fechaInicio: true,
+            fechaFin: true,
+            cliente: {
+                select: {
+                    nombre: true,
+                }
+            }
+        }
+    });
+    console.log('EXISTE UNA RESERVA Y ES: ', conflictingReservation)
+    return conflictingReservation === null;
+}
+
 export async function createReservationService(adminId, data) {
     // Verificar que el admin pertenece a la organización
     const relation = await findAdminOrganizationRelation(adminId, data.organizacionId);
-    if (!relation) return null;
+    if (!relation) {
+        throw new Error('ADMIN_NOT_IN_ORGANIZATION');
+    }
 
     // Verificar que la cabaña pertenece a la misma organización
     const cabana = await findCabinInOrganization(data.cabanaId, data.organizacionId);
-    if (!cabana) return null;
+    if (!cabana) {
+        throw new Error('CABIN_NOT_FOUND');
+    }
 
     // Verificar que el cliente pertenece a la misma organización
     const cliente = await findCustomerInOrganization(data.clienteId, data.organizacionId);
-    if (!cliente) return null;
+    if (!cliente) {
+        throw new Error('CLIENT_NOT_FOUND');
+    }
+
+    // **VALIDAR DISPONIBILIDAD DE LA CABAÑA**
+    const isAvailable = await isCabinAvailable(
+        data.organizacionId,
+        data.cabanaId,
+        data.fechaInicio,
+        data.fechaFin
+    );
+    if (!isAvailable) {
+        throw new Error('DATE_OVERLAP');
+    }
 
     // Crear reserva
     const reservation = await prisma.reserva.create({

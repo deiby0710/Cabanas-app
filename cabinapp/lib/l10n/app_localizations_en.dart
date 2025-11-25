@@ -379,4 +379,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reservationUpdatedSuccess => 'Reservation updated successfully ✅';
+
+  @override
+  String get joinedOrganizationSuccess =>
+      'You have successfully joined the organization';
+
+  @override
+  String get changeOrganization => 'Change Organization';
 }

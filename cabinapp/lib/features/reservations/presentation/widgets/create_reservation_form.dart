@@ -64,52 +64,70 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
     setState(() => isLoading = true);
 
     try {
-      // 🔹 1. Validar disponibilidad desde backend
-      final existingReservations = await _repo.getReservationsByCabin(
-        cabanaId: selectedCabin!.id,
-        desde: widget.startDate,
-        hasta: fechaFin!,
+      // 🔹 Agregar horas específicas a las fechas
+      final fechaInicioConHora = DateTime(
+        widget.startDate.year,
+        widget.startDate.month,
+        widget.startDate.day,
+        15, // 3:00 PM - hora de check-in
+        0,
+        0,
       );
 
-      bool sameDay(DateTime a, DateTime b) =>
-        a.year == b.year && a.month == b.month && a.day == b.day;
+      final fechaFinConHora = DateTime(
+        fechaFin!.year,
+        fechaFin!.month,
+        fechaFin!.day,
+        11, // 11:00 AM - hora de check-out
+        0,
+        0,
+      );
+      // 🔹 1. Validar disponibilidad desde backend
+      // final existingReservations = await _repo.getReservationsByCabin(
+      //   cabanaId: selectedCabin!.id,
+      //   desde: fechaInicioConHora,
+      //   hasta: fechaFinConHora,
+      // );
 
-      final hasOverlap = existingReservations.any((r) {
-        // ✅ Permitir fronteras en el mismo DÍA calendario:
-        if (sameDay(widget.startDate, r.fechaFin)) return false;   // empieza justo cuando termina otra
-        if (sameDay(fechaFin!, r.fechaInicio)) return false;       // termina justo cuando empieza otra
+      // bool sameDay(DateTime a, DateTime b) =>
+      //   a.year == b.year && a.month == b.month && a.day == b.day;
 
-        // 📐 Regla general de solape real (intervalos [inicio, fin)):
-        final newStart = widget.startDate;
-        final newEnd   = fechaFin!;
-        final oldStart = r.fechaInicio;
-        final oldEnd   = r.fechaFin;
+      // final hasOverlap = existingReservations.any((r) {
+      //   // ✅ Permitir fronteras en el mismo DÍA calendario:
+      //   if (sameDay(widget.startDate, r.fechaFin)) return false;   // empieza justo cuando termina otra
+      //   if (sameDay(fechaFin!, r.fechaInicio)) return false;       // termina justo cuando empieza otra
 
-        // No solapan si newEnd <= oldStart  ||  newStart >= oldEnd
-        final nonOverlap = newEnd.isBefore(oldStart) ||
-                          newEnd.isAtSameMomentAs(oldStart) ||
-                          newStart.isAfter(oldEnd) ||
-                          newStart.isAtSameMomentAs(oldEnd);
+      //   // 📐 Regla general de solape real (intervalos [inicio, fin)):
+      //   final newStart = widget.startDate;
+      //   final newEnd   = fechaFin!;
+      //   final oldStart = r.fechaInicio;
+      //   final oldEnd   = r.fechaFin;
 
-        return !nonOverlap;
-      });
+      //   // No solapan si newEnd <= oldStart  ||  newStart >= oldEnd
+      //   final nonOverlap = newEnd.isBefore(oldStart) ||
+      //                     newEnd.isAtSameMomentAs(oldStart) ||
+      //                     newStart.isAfter(oldEnd) ||
+      //                     newStart.isAtSameMomentAs(oldEnd);
 
-      if (hasOverlap) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(local.cabinAlreadyReserved),
-          ),
-        );
-        setState(() => isLoading = false);
-        return;
-      }
+      //   return !nonOverlap;
+      // });
+
+      // if (hasOverlap) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       content: Text(local.cabinAlreadyReserved),
+      //     ),
+      //   );
+      //   setState(() => isLoading = false);
+      //   return;
+      // }
 
       // 🔹 2. Crear la reserva normalmente
       await _repo.createReservation(
         cabanaId: selectedCabin!.id,
         clienteId: selectedClient!.id,
-        fechaInicio: widget.startDate,
-        fechaFin: fechaFin!,
+        fechaInicio: fechaInicioConHora,
+        fechaFin: fechaFinConHora,
         abono: abono ?? 0,
         numPersonas: numPersonas ?? 1,
       );
@@ -120,8 +138,19 @@ class _CreateReservationFormState extends State<CreateReservationForm> {
 
       if (mounted) context.pop(true);
     } catch (e) {
+      String errorMessage = e.toString().replaceFirst('Exception: ', '');
+      // 🔹 Si es el error de fechas, usar la internacionalización
+      if (errorMessage.contains('ya tiene una reserva')) {
+        errorMessage = local.cabinAlreadyReserved;
+      }
+      final theme = Theme.of(context);
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('❌ Error: $e')),
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: theme.colorScheme.error,
+          behavior: SnackBarBehavior.floating,
+        ),
       );
     } finally {
       setState(() => isLoading = false);

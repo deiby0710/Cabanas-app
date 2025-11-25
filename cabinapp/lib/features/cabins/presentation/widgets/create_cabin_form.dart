@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/features/cabins/presentation/providers/cabins_provider.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
@@ -99,6 +100,10 @@ class _CreateCabinFormState extends State<CreateCabinForm> {
               TextFormField(
                 controller: _capacityController,
                 keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(2)
+                ],
                 decoration: InputDecoration(
                   labelText: local.cabinCapacityLabel,
                   prefixIcon: const Icon(Icons.group_outlined),

@@ -835,6 +835,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reservation updated successfully ✅'**
   String get reservationUpdatedSuccess;
+
+  /// No description provided for @joinedOrganizationSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully joined the organization'**
+  String get joinedOrganizationSuccess;
+
+  /// No description provided for @changeOrganization.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Organization'**
+  String get changeOrganization;
 }
 
 class _AppLocalizationsDelegate

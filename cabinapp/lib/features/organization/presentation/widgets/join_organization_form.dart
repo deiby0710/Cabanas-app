@@ -37,8 +37,9 @@ class _JoinOrgFormState extends State<JoinOrgForm> {
         SnackBar(content: Text(orgProvider.errorMessage!)),
       );
     } else {
+      final local = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Te uniste a la organización exitosamente')),
+        SnackBar(content: Text(local.joinedOrganizationSuccess)),
       );
       context.go('/home'); // 👈 Redirige al Home
     }

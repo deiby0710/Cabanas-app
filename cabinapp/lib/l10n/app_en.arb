@@ -122,5 +122,7 @@
   "selectCabinAndClient": "Select a cabin and a client",
   "cabinAlreadyReserved": "The cabin is already reserved for those dates",
   "reservationCreatedSuccess": "Reservation created successfully 🎉",
-  "reservationUpdatedSuccess": "Reservation updated successfully ✅"
+  "reservationUpdatedSuccess": "Reservation updated successfully ✅",
+  "joinedOrganizationSuccess": "You have successfully joined the organization",
+  "changeOrganization": "Change Organization"
 }

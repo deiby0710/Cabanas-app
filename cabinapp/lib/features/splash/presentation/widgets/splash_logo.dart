@@ -1,3 +1,4 @@
+import 'package:cabinapp/features/splash/presentation/widgets/splash_created_by.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,7 @@ class SplashLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -43,14 +45,19 @@ class SplashLogo extends StatelessWidget {
             FadeEffect(duration: 1000.ms),
           ],
           child: Text(
-            'Cabañas app',
+            'Cabin App',
             style: GoogleFonts.frederickaTheGreat(
-              color: color, // 👈 usa el color dinámico
+              color: theme.colorScheme.onPrimary,
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
+
+        const SizedBox(height: 40),
+
+        // 👨‍💻 Created By
+        SplashCreatedBy(color: color),
       ],
     );
   }

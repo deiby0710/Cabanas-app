@@ -61,14 +61,8 @@ class _ReservationsPageState extends State<ReservationsPage> {
     // 🔹 Comprobamos si el día seleccionado está dentro del rango
     final coincide = !selected.isBefore(start) && selected.isBefore(end);
 
-    if (coincide) {
-      print('✅ Día $selected coincide con reserva ID ${r.id}');
-    }
-
     return coincide;
   }).toList();
-
-  print('🎯 Reservas mostradas en lista para $_selectedDay: ${filteredReservations.length}');
 
     return Scaffold(
       appBar: AppBar(
@@ -95,9 +89,6 @@ class _ReservationsPageState extends State<ReservationsPage> {
                 final selected = DateTime(day.year, day.month, day.day);
 
                 final coincide = !selected.isBefore(start) && selected.isBefore(end);
-                if (coincide) {
-                  print('✅ Día $selected coincide con reserva ID ${r.id}');
-                }
 
                 return coincide;
               }).toList();

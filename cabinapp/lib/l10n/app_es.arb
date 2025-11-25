@@ -122,5 +122,7 @@
   "selectCabinAndClient": "Selecciona una cabaña y un cliente",
   "cabinAlreadyReserved": "La cabaña ya está reservada en esas fechas",
   "reservationCreatedSuccess": "Reserva creada correctamente 🎉",
-  "reservationUpdatedSuccess": "Reserva actualizada correctamente ✅"
+  "reservationUpdatedSuccess": "Reserva actualizada correctamente ✅",
+  "joinedOrganizationSuccess": "Te uniste a la organización exitosamente",
+  "changeOrganization": "Cambiar Organización"
 }

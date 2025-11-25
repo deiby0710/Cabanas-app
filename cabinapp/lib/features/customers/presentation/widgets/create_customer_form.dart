@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cabinapp/features/customers/presentation/provider/customers_provider.dart';
 import 'package:cabinapp/l10n/app_localizations.dart';
@@ -90,6 +91,10 @@ class _CreateCustomerFormState extends State<CreateCustomerForm> {
               TextFormField(
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10)
+                ],
                 decoration: InputDecoration(
                   labelText: local.clientPhoneLabel,
                   prefixIcon: const Icon(Icons.phone_outlined),

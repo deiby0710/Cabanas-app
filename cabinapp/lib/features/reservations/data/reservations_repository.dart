@@ -75,7 +75,7 @@ class ReservationsRepository {
       return ReservationModel.fromJson(response.data['reservation']);
     } on DioException catch (e) {
       final message =
-          e.response?.data?['message'] ?? 'Error al crear la reserva';
+          e.response?.data?['error'] ?? 'Error al crear la reserva';
       throw Exception(message);
     } catch (_) {
       throw Exception('Error inesperado al crear la reserva');

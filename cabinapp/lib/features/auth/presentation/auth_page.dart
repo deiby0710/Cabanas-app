@@ -1,3 +1,4 @@
+import 'package:cabinapp/features/settings/presentation/widgets/created_by_label.dart';
 import 'package:flutter/material.dart';
 import 'package:cabinapp/features/auth/presentation/widgets/login_form.dart';
 import 'package:cabinapp/features/auth/presentation/widgets/register_form.dart';
@@ -112,6 +113,7 @@ class _AuthPageState extends State<AuthPage> {
                     ? const LoginForm(key: ValueKey('login'))
                     : const RegisterForm(key: ValueKey('register')),
               ),
+              const CreatedByLabel(),
             ],
           ),
         ),

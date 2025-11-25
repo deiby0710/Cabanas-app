@@ -38,17 +38,39 @@ export async function createReservation(req, res) {
             numPersonas: numPersonas || 1
         });
 
-        if (!reservation) {
-            return res.status(403).json({ error: 'No tienes permisos o los datos son inválidos.' });
-        }
-
         res.status(201).json({
             message: 'Reserva creada correctamente.',
             reservation,
         });
     } catch (error) {
         console.error('Error al crear reserva:', error);
-        res.status(500).json({ error: 'Error en el servidor.' });
+        // Manejo de errores específicos
+        switch (error.message) {
+            case 'DATE_OVERLAP':
+                return res.status(409).json({ 
+                    error: 'La cabaña ya tiene una reserva en ese rango de fechas.' 
+                });
+            
+            case 'CABIN_NOT_FOUND':
+                return res.status(404).json({ 
+                    error: 'La cabaña no existe o no pertenece a tu organización.' 
+                });
+            
+            case 'CLIENT_NOT_FOUND':
+                return res.status(404).json({ 
+                    error: 'El cliente no existe o no pertenece a tu organización.' 
+                });
+            
+            case 'ADMIN_NOT_IN_ORGANIZATION':
+                return res.status(403).json({ 
+                    error: 'No tienes permisos para crear reservas en esta organización.' 
+                });
+            
+            default:
+                return res.status(500).json({ 
+                    error: 'Error al crear la reserva.' 
+                });
+        }
     }
 }
 
